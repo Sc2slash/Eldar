@@ -52,4 +52,19 @@ public class Window extends Canvas{
 	public Dimension getCanvasSize(){
 		return canvasSize;
 	}
+	public boolean isResizable(){
+		return resizable;
+	}
+	public String getCaption(){
+		return caption;
+	}
+	public int getScale(){
+		return scale;
+	}
+	public BufferedImage getIcon(){
+		return icon;
+	}
+	public JFrame getFrame(){
+		return frame;
+	}
 }
