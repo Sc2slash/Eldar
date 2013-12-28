@@ -11,9 +11,12 @@ public class Screen {
 	private Window window;
 	private Dimension size;
 	private BufferedImage image;
+//	Pixels are the one where we draw which are then copied to pixelData which is the pixels of the image.
+//	Gotta try to see if aditional step is necessary or if can drop directly on pixelData
 	private int pixels[];
 	private int pixelData[];
 	
+	int j = 0;
 	public Screen(Window window){
 		this.window = window;
 		this.size = window.getCanvasSize();
@@ -27,10 +30,19 @@ public class Screen {
 			pixels[i] = CLEAR_COLOR;
 		}
 	}
-	public void render(){
+	public void render(int x, int y, Sprite sprite){
 		//Add draw method for sprite
+		for(int yl = 0, yp = y; yl < sprite.getHeight(); yl++, yp++){
+			if(yp < 0 || yp >= size.height) continue;
+			for(int xl = 0, xp = x; xl < sprite.getWidth(); xl++, xp++){
+				if(xp < 0 || xp >= size.width) continue;
+//				all it does for now is just draw yellow where image is supposed to be
+				pixels[xp+yp*size.width] = 0xffff00;
+			}
+		}
 	}
 	public void draw(Graphics g){
+		render(0,0,Sprite.spriteTest);
 		for(int i = 0; i<pixels.length;i++){
 			pixelData[i] = pixels[i];
 		}
