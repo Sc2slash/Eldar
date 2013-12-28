@@ -32,10 +32,10 @@ public class Screen {
 	}
 	public void render(int x, int y, Sprite sprite){
 		//Add draw method for sprite
-		for(int yl = 0, yp = y; yl < sprite.getHeight(); yl++, yp++){
-			if(yp < 0 || yp >= size.height) continue;
-			for(int xl = 0, xp = x; xl < sprite.getWidth(); xl++, xp++){
-				if(xp < 0 || xp >= size.width) continue;
+		for(int yl = 0, yp = y; yl < sprite.getHeight() && yp < size.height; yl++, yp++){
+			if(yp < 0) continue;
+			for(int xl = 0, xp = x; xl < sprite.getWidth() && xp < size.width; xl++, xp++){
+				if(xp < 0) continue;
 //				all it does for now is just draw yellow where image is supposed to be
 				pixels[xp+yp*size.width] = sprite.pixels[xl+yl*sprite.getWidth()];
 			}
@@ -43,7 +43,13 @@ public class Screen {
 	}
 	public void draw(Graphics g){
 		clear();
-		render(0,0, Sprite.spriteTest);
+		//Simple tile rendering test. need to change it later on to the level class
+//		render(0,0, Sprite.spriteTest);
+		for(int y = 0; y < size.height; y+=32){
+			for(int x = 0; x < size.width; x+=32){
+				render(x,y, Sprite.spriteTest);
+			}
+		}
 		for(int i = 0; i<pixels.length;i++){
 			pixelData[i] = pixels[i];
 		}
