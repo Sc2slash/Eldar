@@ -37,7 +37,7 @@ public class Screen {
 			for(int xl = 0, xp = x; xl < sprite.getWidth(); xl++, xp++){
 				if(xp < 0 || xp >= size.width) continue;
 //				all it does for now is just draw yellow where image is supposed to be
-				pixels[xp+yp*size.width] = 0xffff00;
+				pixels[xp+yp*size.width] = sprite.pixels[xl+yl*sprite.getWidth()];
 			}
 		}
 	}

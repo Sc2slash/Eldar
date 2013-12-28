@@ -8,7 +8,7 @@ public class Sprite {
 	
 	private Dimension size;
 	private Spritesheet spritesheet;
-	private int pixels[];
+	public int pixels[];
 	
 	public Sprite(){
 		size = new Dimension(0,0);
