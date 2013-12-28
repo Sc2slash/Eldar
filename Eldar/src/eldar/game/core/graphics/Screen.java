@@ -42,7 +42,8 @@ public class Screen {
 		}
 	}
 	public void draw(Graphics g){
-		render(0,0,Sprite.spriteTest);
+		clear();
+		render(0,0, Sprite.spriteTest);
 		for(int i = 0; i<pixels.length;i++){
 			pixelData[i] = pixels[i];
 		}
