@@ -1,17 +1,13 @@
-package eldar.game.core.graphics;
+package eldar.game.client.core.graphics;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-
-import eldar.game.core.levels.tiles.Tile;
+import eldar.game.client.core.levels.tiles.Tile;
 
 public class Screen {
 	private final int CLEAR_COLOR = 0x00ffff;

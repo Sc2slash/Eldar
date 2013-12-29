@@ -1,8 +1,8 @@
-package eldar.game.core.levels.tiles;
+package eldar.game.client.core.levels.tiles;
 
-import eldar.game.Resources;
-import eldar.game.core.graphics.Screen;
-import eldar.game.core.graphics.Sprite;
+import eldar.game.client.Resources;
+import eldar.game.client.core.graphics.Screen;
+import eldar.game.client.core.graphics.Sprite;
 import eldar.game.utilities.GameException;
 
 public class Tile {

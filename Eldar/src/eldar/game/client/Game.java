@@ -1,13 +1,11 @@
-package eldar.game;
+package eldar.game.client;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import eldar.game.core.graphics.Screen;
-import eldar.game.core.graphics.Window;
-import eldar.game.launcher.Launcher;
+import eldar.game.client.core.graphics.Screen;
+import eldar.game.client.core.graphics.Window;
+import eldar.game.client.launcher.Launcher;
 
 public class Game implements Runnable{
 

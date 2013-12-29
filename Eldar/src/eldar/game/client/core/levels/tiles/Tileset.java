@@ -1,8 +1,8 @@
-package eldar.game.core.levels.tiles;
+package eldar.game.client.core.levels.tiles;
 
 import java.awt.Dimension;
 
-import eldar.game.core.graphics.Spritesheet;
+import eldar.game.client.core.graphics.Spritesheet;
 
 public class Tileset extends Spritesheet{
 

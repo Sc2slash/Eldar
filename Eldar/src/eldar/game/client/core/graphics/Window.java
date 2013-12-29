@@ -1,4 +1,4 @@
-package eldar.game.core.graphics;
+package eldar.game.client.core.graphics;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
