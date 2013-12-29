@@ -1,20 +1,26 @@
 package eldar.game.core.levels.tiles;
 
+import eldar.game.Resources;
 import eldar.game.core.graphics.Screen;
 import eldar.game.core.graphics.Sprite;
-import eldar.game.core.graphics.Spritesheet;
+import eldar.game.utilities.GameException;
 
 public class Tile {
 	
 	
-	private final Spritesheet TILESET = new Spritesheet("/graphics/dirt.jpg");
-	private final int TILE_WIDTH  = 32;
-	private final int TILE_HEIGHT = 32;
 	
 	private int id;
 	private Sprite sprite;
 	
+	private static Tileset tileset = Resources.tileset;
+	public static Tile[] tiles = new Tile[tileset.numTiles];
+	
+	public static Tile testTile = new Tile(0);
+	
 	public Tile(int id){
+		this.id = id;
+		if(tiles[id] != null) throw new GameException("Tile already added, id: " + id);
+		sprite = new Sprite(tileset, id%tileset.getWidth()*tileset.tileSize.width, id/tileset.getWidth()*tileset.tileSize.height, tileset.tileSize.width,tileset.tileSize.height);
 	}
 	public boolean isSolid(){
 		return false;

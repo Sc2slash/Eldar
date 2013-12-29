@@ -6,8 +6,8 @@ public class Sprite {
 	
 	public static Sprite spriteTest = new Sprite(new Spritesheet("/graphics/dirt.jpg"));
 	
-	private Dimension size;
-	private Spritesheet spritesheet;
+	protected Dimension size;
+	protected Spritesheet spritesheet;
 	public int pixels[];
 	
 	public Sprite(){

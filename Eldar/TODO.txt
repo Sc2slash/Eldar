@@ -1,0 +1,9 @@
+To do list:
+1-Add text drawing
+2-Simple draw level and entities and shit
+3-Draw interface
+4-Load all that shit from file
+5-Get commands working
+6-get timers working
+7-Possibly animation?
+8-Get sound

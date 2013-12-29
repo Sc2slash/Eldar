@@ -1,27 +1,28 @@
 package eldar.game;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 import eldar.game.core.graphics.Screen;
 import eldar.game.core.graphics.Window;
+import eldar.game.launcher.Launcher;
 
 public class Game implements Runnable{
 
 	public Window window;
 	public Screen screen;
-	
+	public Launcher launcher;
 	private Thread thread;
+	
 	private boolean running = false;
 	
 	public Game(){
-		window = new Window(600,450,2,false,"Eldar",null);
-		screen = new Screen(window);
-		window.launchWindow();
-		start();
+		launcher = new Launcher(this);
+		launcher.start();
 	}
 	public synchronized void start(){	
-		running = true;
 		thread = new Thread(this, "Game");
 		thread.start();
 	}
@@ -41,7 +42,6 @@ public class Game implements Runnable{
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
-		g.fillRect(0, 0, window.getWidth(), window.getHeight());
 		screen.draw(g);
 		g.dispose();
 		bs.show();
@@ -58,9 +58,15 @@ public class Game implements Runnable{
 			update();
 		}
 	}
-	
+	public void launch(){
+		running = true;
+		window = new Window(640,480,2,false,"Eldar",null);
+		screen = new Screen(window);
+		window.launchWindow();
+		start();
+	}
 	public static void main(String[] args) {
 		Game game = new Game();
 	}
-
+	
 }

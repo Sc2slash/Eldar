@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
 import eldar.game.utilities.GameException;
 
 public class Spritesheet {
-	private String path;
-	private Dimension size;
+	protected String path;
+	protected Dimension size;
 	public int pixels[];
 	
 	public Spritesheet(String path){

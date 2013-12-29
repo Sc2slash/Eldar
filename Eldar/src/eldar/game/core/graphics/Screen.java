@@ -1,9 +1,17 @@
 package eldar.game.core.graphics;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import eldar.game.core.levels.tiles.Tile;
 
 public class Screen {
 	private final int CLEAR_COLOR = 0x00ffff;
@@ -14,15 +22,13 @@ public class Screen {
 //	Pixels are the one where we draw which are then copied to pixelData which is the pixels of the image.
 //	Gotta try to see if aditional step is necessary or if can drop directly on pixelData
 	private int pixels[];
-	private int pixelData[];
 	
 	int j = 0;
 	public Screen(Window window){
 		this.window = window;
 		this.size = window.getCanvasSize();
 		this.image = new BufferedImage(size.width,size.height,BufferedImage.TYPE_INT_RGB);
-		this.pixelData = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
-		this.pixels = new int[size.width*size.height];
+		this.pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 		clear();
 	}
 	public void clear(){
@@ -41,17 +47,19 @@ public class Screen {
 			}
 		}
 	}
+	public void drawText(String text, int x, int y, Font font){
+		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.setFont(font);
+		g.drawString(text, x, y);
+		g.dispose();
+	}
 	public void draw(Graphics g){
 		clear();
 		//Simple tile rendering test. need to change it later on to the level class
-//		render(0,0, Sprite.spriteTest);
 		for(int y = 0; y < size.height; y+=32){
 			for(int x = 0; x < size.width; x+=32){
-				render(x,y, Sprite.spriteTest);
+				Tile.testTile.render(this, x,y);
 			}
-		}
-		for(int i = 0; i<pixels.length;i++){
-			pixelData[i] = pixels[i];
 		}
 		g.drawImage(image, 0, 0, window.getWidth(), window.getHeight(), null);
 	}
