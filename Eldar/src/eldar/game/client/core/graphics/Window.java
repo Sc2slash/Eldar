@@ -12,18 +12,23 @@ public class Window extends Canvas{
 	private boolean resizable;
 	private String caption;
 	private BufferedImage icon;
-	
+	private boolean fullscreen;
 	private JFrame frame;
 	
-	public Window(int width, int height, int scale, boolean resizable, String caption, BufferedImage icon){
+	public Window(int width, int height, int scale, boolean resizable, boolean fullscreen, String caption, BufferedImage icon){
 		this.canvasSize = new Dimension(width, height);
 		this.scale = scale;
 		this.resizable = resizable;
+		this.fullscreen = fullscreen;
 		this.caption = caption;
 		this.icon = icon;
 		this.windowSize = new Dimension(width*scale, height*scale);
 		//JFrame stuff
 		this.frame = new JFrame(caption);
+		if(fullscreen){
+			frame.setUndecorated(true);
+			frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
 		this.frame.setIconImage(icon);
 		this.frame.setResizable(resizable);
 		this.setPreferredSize(windowSize);

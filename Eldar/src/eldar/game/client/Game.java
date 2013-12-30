@@ -58,7 +58,7 @@ public class Game implements Runnable{
 	}
 	public void launch(){
 		running = true;
-		window = new Window(640,480,2,false,"Eldar",null);
+		window = new Window(640,480,2,false, false,"Eldar",null);
 		screen = new Screen(window);
 		window.launchWindow();
 		start();
