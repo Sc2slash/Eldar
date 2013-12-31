@@ -19,6 +19,7 @@ import eldar.game.client.Game;
 public class Launcher extends JFrame {
 	private JTextField txtName;
 	private JPasswordField passwordField;
+	
 	private JLabel lblInvalidUsernameOr;
 	private JLabel lblUnnableToConnect;
 	

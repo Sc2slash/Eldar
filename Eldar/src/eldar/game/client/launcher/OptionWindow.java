@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
@@ -43,11 +45,14 @@ public class OptionWindow extends JFrame {
 	private JSlider sliderMusicVolume;
 	private JTextField txtEffectsVolume;
 	private JSlider sliderEffectsVolume;
-	private JTextField txtVoiceVolume;
-	private JSlider sliderVoiceVolume;
+	private JTextField txtVoicesVolume;
+	private JSlider sliderVoicesVolume;
 	private JTextField txtMaxFps;
 	private Checkbox checkboxDisableSound;
 	private Checkbox checkboxFullscreen;
+	private Checkbox checkLanguageFilter;
+	private Checkbox checkEnableTips;
+	private Checkbox checkGeneralChat;
 	private JComboBox cmbResolution;
 	private JComboBox cmbWindow;
 	
@@ -120,7 +125,7 @@ public class OptionWindow extends JFrame {
 				int i = -1;
 				try{
 					i = Integer.parseInt(txtMaxFps.getText());
-					if(i < 0){
+					if(i <= 0){
 						txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
 					}
 				}catch(NumberFormatException ex){
@@ -129,7 +134,25 @@ public class OptionWindow extends JFrame {
 				
 			}
 		});
-		
+		txtMaxFps.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				int i = -1;
+				try{
+					i = Integer.parseInt(txtMaxFps.getText());
+					if(i < 0){
+						txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
+					}
+				}catch(NumberFormatException ex){
+					txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
+				}
+				
+			}
+			public void focusGained(FocusEvent arg0) {
+				
+			}
+		});
 		JLayeredPane layeredPane_1 = new JLayeredPane();
 		tabbedPane.addTab("Audio", null, layeredPane_1, null);
 		
@@ -172,6 +195,29 @@ public class OptionWindow extends JFrame {
 				}
 			}
 		});
+		txtMasterVolume.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				int n = -1;
+				try{
+				 n = Integer.parseInt(txtMasterVolume.getText());
+				if(n > 100){
+					sliderMasterVolume.setValue(100);
+					txtMasterVolume.setText(Integer.toString(100));
+				}
+				else if(n < 0){
+					sliderMasterVolume.setValue(0);
+					txtMasterVolume.setText(Integer.toString(0));
+				}
+				else
+					sliderMasterVolume.setValue(Integer.parseInt(txtMasterVolume.getText()));
+				}catch(NumberFormatException ex){
+					txtMasterVolume.setText(Integer.toString(sliderMasterVolume.getValue()));
+				}
+				
+			}
+			public void focusGained(FocusEvent e) {
+			}
+		});
 		
 		sliderMusicVolume = new JSlider();
 		sliderMusicVolume.setBounds(29, 88, 257, 23);
@@ -210,6 +256,29 @@ public class OptionWindow extends JFrame {
 				}catch(NumberFormatException ex){
 					txtMusicVolume.setText(Integer.toString(sliderMusicVolume.getValue()));
 				}
+			}
+		});
+		txtMusicVolume.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				int n = -1;
+				try{
+					 n = Integer.parseInt(txtMusicVolume.getText());
+					if(n > 100){
+						sliderMusicVolume.setValue(100);
+						txtMusicVolume.setText(Integer.toString(100));
+					}
+					else if(n < 0){
+						sliderMusicVolume.setValue(0);
+						txtMusicVolume.setText(Integer.toString(0));
+					}
+					else
+						sliderMusicVolume.setValue(Integer.parseInt(txtMusicVolume.getText()));
+					}catch(NumberFormatException ex){
+						txtMusicVolume.setText(Integer.toString(sliderMusicVolume.getValue()));
+					}
+				
+			}
+			public void focusGained(FocusEvent e) {
 			}
 		});
 		
@@ -252,45 +321,88 @@ public class OptionWindow extends JFrame {
 				}
 			}
 		});
-		
+		txtEffectsVolume.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				int n = -1;
+				try{
+				 n = Integer.parseInt(txtEffectsVolume.getText());
+				if(n > 100){
+					sliderEffectsVolume.setValue(100);
+					txtEffectsVolume.setText(Integer.toString(100));
+				}
+				else if(n < 0){
+					sliderEffectsVolume.setValue(0);
+					txtEffectsVolume.setText(Integer.toString(0));
+				}
+				else
+					sliderEffectsVolume.setValue(Integer.parseInt(txtEffectsVolume.getText()));
+				}catch(NumberFormatException ex){
+					txtEffectsVolume.setText(Integer.toString(sliderEffectsVolume.getValue()));
+				}		
+			}
+			public void focusGained(FocusEvent e) {
+			}
+		});
 
-		sliderVoiceVolume = new JSlider();
-		sliderVoiceVolume.setBounds(29, 168, 257, 23);
-		layeredPane_1.add(sliderVoiceVolume);
-		sliderVoiceVolume.setValue(Resources.gameProperties.voicesVolume);
-		sliderVoiceVolume.addChangeListener(new ChangeListener() {
+		sliderVoicesVolume = new JSlider();
+		sliderVoicesVolume.setBounds(29, 168, 257, 23);
+		layeredPane_1.add(sliderVoicesVolume);
+		sliderVoicesVolume.setValue(Resources.gameProperties.voicesVolume);
+		sliderVoicesVolume.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				txtVoiceVolume.setText(Integer.toString(sliderVoiceVolume.getValue()));
+				txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
 			}
 		});
 		
-		JLabel lblVoiceVolume = new JLabel("Voice Volume");
-		lblVoiceVolume.setBounds(354, 168, 86, 23);
-		layeredPane_1.add(lblVoiceVolume);
+		JLabel lblVoicesVolume = new JLabel("Voices Volume");
+		lblVoicesVolume.setBounds(354, 168, 86, 23);
+		layeredPane_1.add(lblVoicesVolume);
 		
-		txtVoiceVolume = new JTextField();
-		txtVoiceVolume.setBounds(297, 168, 49, 22);
-		layeredPane_1.add(txtVoiceVolume);
-		txtVoiceVolume.setColumns(10);
-		txtVoiceVolume.setText(Integer.toString(Resources.gameProperties.voicesVolume));
-		txtVoiceVolume.addActionListener(new ActionListener() {
+		txtVoicesVolume = new JTextField();
+		txtVoicesVolume.setBounds(297, 168, 49, 22);
+		layeredPane_1.add(txtVoicesVolume);
+		txtVoicesVolume.setColumns(10);
+		txtVoicesVolume.setText(Integer.toString(Resources.gameProperties.voicesVolume));
+		txtVoicesVolume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int n = -1;
 				try{
-				 n = Integer.parseInt(txtVoiceVolume.getText());
+				 n = Integer.parseInt(txtVoicesVolume.getText());
 				if(n > 100){
-					sliderVoiceVolume.setValue(100);
-					txtVoiceVolume.setText(Integer.toString(100));
+					sliderVoicesVolume.setValue(100);
+					txtVoicesVolume.setText(Integer.toString(100));
 				}
 				else if(n < 0){
-					sliderVoiceVolume.setValue(0);
-					txtVoiceVolume.setText(Integer.toString(0));
+					sliderVoicesVolume.setValue(0);
+					txtVoicesVolume.setText(Integer.toString(0));
 				}
 				else
-					sliderVoiceVolume.setValue(Integer.parseInt(txtVoiceVolume.getText()));
+					sliderVoicesVolume.setValue(Integer.parseInt(txtVoicesVolume.getText()));
 				}catch(NumberFormatException ex){
-					txtVoiceVolume.setText(Integer.toString(sliderVoiceVolume.getValue()));
+					txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
 				}
+			}
+		});
+		txtVoicesVolume.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+				int n = -1;
+				try{
+				 n = Integer.parseInt(txtVoicesVolume.getText());
+				if(n > 100){
+					sliderVoicesVolume.setValue(100);
+					txtVoicesVolume.setText(Integer.toString(100));
+				}
+				else if(n < 0){
+					sliderVoicesVolume.setValue(0);
+					txtVoicesVolume.setText(Integer.toString(0));
+				}
+				else
+					sliderVoicesVolume.setValue(Integer.parseInt(txtVoicesVolume.getText()));
+				}catch(NumberFormatException ex){
+					txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
+				}				
+			}
+			public void focusGained(FocusEvent e) {
 			}
 		});
 		
@@ -302,23 +414,24 @@ public class OptionWindow extends JFrame {
 				checkSound();		
 			}
 		});
+		
 		checkboxDisableSound.setState(Resources.gameProperties.disableSound);
 		checkSound();
 		
 		JLayeredPane layeredPane_2 = new JLayeredPane();
 		tabbedPane.addTab("Gameplay", null, layeredPane_2, null);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Enable Language Filter");
-		chckbxNewCheckBox.setBounds(26, 24, 159, 25);
-		layeredPane_2.add(chckbxNewCheckBox);
+		checkLanguageFilter = new Checkbox("Enable Language Filter");
+		checkLanguageFilter.setBounds(26, 24, 159, 25);
+		layeredPane_2.add(checkLanguageFilter);
 		
-		JCheckBox chckbxEnableTips = new JCheckBox("Enable Tips");
-		chckbxEnableTips.setBounds(26, 63, 113, 25);
-		layeredPane_2.add(chckbxEnableTips);
+		checkEnableTips = new Checkbox("Enable Tips");
+		checkEnableTips.setBounds(26, 63, 113, 25);
+		layeredPane_2.add(checkEnableTips);
 		
-		JCheckBox chckbxNewCheckBox_1 = new JCheckBox("Enable General Chat");
-		chckbxNewCheckBox_1.setBounds(26, 104, 145, 25);
-		layeredPane_2.add(chckbxNewCheckBox_1);
+		checkGeneralChat = new Checkbox("Enable General Chat");
+		checkGeneralChat.setBounds(26, 104, 145, 25);
+		layeredPane_2.add(checkGeneralChat);
 		
 		JButton btnSave = new JButton("Save");
 		btnSave.setBounds(627, 50, 97, 25);
@@ -342,17 +455,17 @@ public class OptionWindow extends JFrame {
 		Resources.gameProperties.windowSize = cmbWindow.getSelectedIndex();
 		Resources.gameProperties.resolution = cmbResolution.getSelectedIndex();
 		Resources.gameProperties.fullscreen = checkboxFullscreen.getState();
-		Resources.gameProperties.maxFps = 120;
+		Resources.gameProperties.maxFps = Integer.parseInt(txtMaxFps.getText());
 		//Audio
 		Resources.gameProperties.masterVolume = sliderMasterVolume.getValue();
 		Resources.gameProperties.musicVolume = sliderMusicVolume.getValue();
 		Resources.gameProperties.effectsVolume = sliderEffectsVolume.getValue();
-		Resources.gameProperties.voicesVolume = sliderVoiceVolume.getValue();
+		Resources.gameProperties.voicesVolume = sliderVoicesVolume.getValue();
 		Resources.gameProperties.disableSound = checkboxDisableSound.getState();
 		//Gameplay
-		Resources.gameProperties.languageFilter = false;
-		Resources.gameProperties.includeTips = false;
-		Resources.gameProperties.generalChat = false;
+		Resources.gameProperties.languageFilter = checkLanguageFilter.getState();
+		Resources.gameProperties.includeTips = checkEnableTips.getState();
+		Resources.gameProperties.generalChat = checkGeneralChat.getState();
 		
 		Resources.gameProperties.writeProperties();
 		dispose();
@@ -371,8 +484,8 @@ public class OptionWindow extends JFrame {
 			sliderMusicVolume.setEnabled(false);
 			txtEffectsVolume.setEnabled(false);
 			sliderEffectsVolume.setEnabled(false);
-			txtVoiceVolume.setEnabled(false);
-			sliderVoiceVolume.setEnabled(false);
+			txtVoicesVolume.setEnabled(false);
+			sliderVoicesVolume.setEnabled(false);
 		}
 		else{
 			txtMasterVolume.setEnabled(true);
@@ -381,8 +494,8 @@ public class OptionWindow extends JFrame {
 			sliderMusicVolume.setEnabled(true);
 			txtEffectsVolume.setEnabled(true);
 			sliderEffectsVolume.setEnabled(true);
-			txtVoiceVolume.setEnabled(true);
-			sliderVoiceVolume.setEnabled(true);
+			txtVoicesVolume.setEnabled(true);
+			sliderVoicesVolume.setEnabled(true);
 		}
 	}
 }
