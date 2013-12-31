@@ -39,13 +39,13 @@ public class OptionWindow extends JFrame {
 
 	private JPanel contentPane;
 	
-	private JTextField txtMasterVolume;
+	private NumberTextField txtMasterVolume;
 	private JSlider sliderMasterVolume;
-	private JTextField txtMusicVolume;
+	private NumberTextField txtMusicVolume;
 	private JSlider sliderMusicVolume;
-	private JTextField txtEffectsVolume;
+	private NumberTextField txtEffectsVolume;
 	private JSlider sliderEffectsVolume;
-	private JTextField txtVoicesVolume;
+	private NumberTextField txtVoicesVolume;
 	private JSlider sliderVoicesVolume;
 	private JTextField txtMaxFps;
 	private Checkbox checkboxDisableSound;
@@ -170,54 +170,12 @@ public class OptionWindow extends JFrame {
 		lblMasterVolume.setBounds(354, 48, 86, 23);
 		layeredPane_1.add(lblMasterVolume);
 		
-		txtMasterVolume = new JTextField();
+		txtMasterVolume = new NumberTextField(sliderMasterVolume,0,100);
 		txtMasterVolume.setBounds(297, 48, 49, 22);
 		layeredPane_1.add(txtMasterVolume);
 		txtMasterVolume.setColumns(10);
 		txtMasterVolume.setText(Integer.toString(Resources.gameProperties.masterVolume));
-		txtMasterVolume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtMasterVolume.getText());
-				if(n > 100){
-					sliderMasterVolume.setValue(100);
-					txtMasterVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderMasterVolume.setValue(0);
-					txtMasterVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderMasterVolume.setValue(Integer.parseInt(txtMasterVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtMasterVolume.setText(Integer.toString(sliderMasterVolume.getValue()));
-				}
-			}
-		});
-		txtMasterVolume.addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtMasterVolume.getText());
-				if(n > 100){
-					sliderMasterVolume.setValue(100);
-					txtMasterVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderMasterVolume.setValue(0);
-					txtMasterVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderMasterVolume.setValue(Integer.parseInt(txtMasterVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtMasterVolume.setText(Integer.toString(sliderMasterVolume.getValue()));
-				}
-				
-			}
-			public void focusGained(FocusEvent e) {
-			}
-		});
+		
 		
 		sliderMusicVolume = new JSlider();
 		sliderMusicVolume.setBounds(29, 88, 257, 23);
@@ -233,54 +191,11 @@ public class OptionWindow extends JFrame {
 		lblMusicVolume.setBounds(354, 88, 86, 23);
 		layeredPane_1.add(lblMusicVolume);
 		
-		txtMusicVolume = new JTextField();
+		txtMusicVolume = new NumberTextField(sliderMusicVolume,0,100);
 		txtMusicVolume.setBounds(297, 88, 49, 22);
 		layeredPane_1.add(txtMusicVolume);
 		txtMusicVolume.setColumns(10);
 		txtMusicVolume.setText(Integer.toString(Resources.gameProperties.musicVolume));
-		txtMusicVolume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtMusicVolume.getText());
-				if(n > 100){
-					sliderMusicVolume.setValue(100);
-					txtMusicVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderMusicVolume.setValue(0);
-					txtMusicVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderMusicVolume.setValue(Integer.parseInt(txtMusicVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtMusicVolume.setText(Integer.toString(sliderMusicVolume.getValue()));
-				}
-			}
-		});
-		txtMusicVolume.addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-				int n = -1;
-				try{
-					 n = Integer.parseInt(txtMusicVolume.getText());
-					if(n > 100){
-						sliderMusicVolume.setValue(100);
-						txtMusicVolume.setText(Integer.toString(100));
-					}
-					else if(n < 0){
-						sliderMusicVolume.setValue(0);
-						txtMusicVolume.setText(Integer.toString(0));
-					}
-					else
-						sliderMusicVolume.setValue(Integer.parseInt(txtMusicVolume.getText()));
-					}catch(NumberFormatException ex){
-						txtMusicVolume.setText(Integer.toString(sliderMusicVolume.getValue()));
-					}
-				
-			}
-			public void focusGained(FocusEvent e) {
-			}
-		});
 		
 		sliderEffectsVolume = new JSlider();
 		sliderEffectsVolume.setBounds(29, 128, 257, 23);
@@ -296,54 +211,11 @@ public class OptionWindow extends JFrame {
 		lblEffectsVolume.setBounds(354, 128, 86, 23);
 		layeredPane_1.add(lblEffectsVolume);
 		
-		txtEffectsVolume = new JTextField();
+		txtEffectsVolume = new NumberTextField(sliderEffectsVolume,0,100);
 		txtEffectsVolume.setBounds(297, 128, 49, 22);
 		layeredPane_1.add(txtEffectsVolume);
 		txtEffectsVolume.setColumns(10);
 		txtEffectsVolume.setText(Integer.toString(Resources.gameProperties.effectsVolume));
-		txtEffectsVolume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtEffectsVolume.getText());
-				if(n > 100){
-					sliderEffectsVolume.setValue(100);
-					txtEffectsVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderEffectsVolume.setValue(0);
-					txtEffectsVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderEffectsVolume.setValue(Integer.parseInt(txtEffectsVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtEffectsVolume.setText(Integer.toString(sliderEffectsVolume.getValue()));
-				}
-			}
-		});
-		txtEffectsVolume.addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtEffectsVolume.getText());
-				if(n > 100){
-					sliderEffectsVolume.setValue(100);
-					txtEffectsVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderEffectsVolume.setValue(0);
-					txtEffectsVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderEffectsVolume.setValue(Integer.parseInt(txtEffectsVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtEffectsVolume.setText(Integer.toString(sliderEffectsVolume.getValue()));
-				}		
-			}
-			public void focusGained(FocusEvent e) {
-			}
-		});
-
 		sliderVoicesVolume = new JSlider();
 		sliderVoicesVolume.setBounds(29, 168, 257, 23);
 		layeredPane_1.add(sliderVoicesVolume);
@@ -358,53 +230,11 @@ public class OptionWindow extends JFrame {
 		lblVoicesVolume.setBounds(354, 168, 86, 23);
 		layeredPane_1.add(lblVoicesVolume);
 		
-		txtVoicesVolume = new JTextField();
+		txtVoicesVolume = new NumberTextField(sliderVoicesVolume,0,100);
 		txtVoicesVolume.setBounds(297, 168, 49, 22);
 		layeredPane_1.add(txtVoicesVolume);
 		txtVoicesVolume.setColumns(10);
 		txtVoicesVolume.setText(Integer.toString(Resources.gameProperties.voicesVolume));
-		txtVoicesVolume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtVoicesVolume.getText());
-				if(n > 100){
-					sliderVoicesVolume.setValue(100);
-					txtVoicesVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderVoicesVolume.setValue(0);
-					txtVoicesVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderVoicesVolume.setValue(Integer.parseInt(txtVoicesVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
-				}
-			}
-		});
-		txtVoicesVolume.addFocusListener(new FocusListener() {
-			public void focusLost(FocusEvent e) {
-				int n = -1;
-				try{
-				 n = Integer.parseInt(txtVoicesVolume.getText());
-				if(n > 100){
-					sliderVoicesVolume.setValue(100);
-					txtVoicesVolume.setText(Integer.toString(100));
-				}
-				else if(n < 0){
-					sliderVoicesVolume.setValue(0);
-					txtVoicesVolume.setText(Integer.toString(0));
-				}
-				else
-					sliderVoicesVolume.setValue(Integer.parseInt(txtVoicesVolume.getText()));
-				}catch(NumberFormatException ex){
-					txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
-				}				
-			}
-			public void focusGained(FocusEvent e) {
-			}
-		});
 		
 		checkboxDisableSound = new Checkbox("Disable Sound");
 		checkboxDisableSound.setBounds(34, 207, 108, 24);
