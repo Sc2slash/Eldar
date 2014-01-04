@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,10 +17,12 @@ import javax.swing.UIManager;
 import eldar.game.client.Game;
 import eldar.game.client.net.packets.Packet000Login;
 import eldar.game.utilities.Timer;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 
 public class Launcher extends JFrame {
 
-	public int valid_login;
+	public int valid_login = -1;
 	
 	private JTextField txtName;
 	private JPasswordField passwordField;
@@ -35,7 +36,6 @@ public class Launcher extends JFrame {
 	public Launcher(Game game) {
 		this.game = game;
 		this.optionWindow = new OptionWindow();
-
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -112,36 +112,29 @@ public class Launcher extends JFrame {
 		optionWindow.start();
 	}
 	public boolean checkConnection() {
-		if (game.client_server.pingMS() != -1) {
-			return true;
-		}
-		lblInvalidUsernameOr.setVisible(false);
-		lblUnnableToConnect.setVisible(true);
-		return false;
+		
+		return true;
 	}
 	public boolean checkLogin(){
-		int TIME_TIMEOUT_S = 2;
-		valid_login = -1;
-		Packet000Login packet = new Packet000Login(txtName.getText(), passwordField.getText(), game.client_server.connection_id);
-		Timer t = new Timer();
-		t.start();
-		for (int i = 0; i < 5; i++) {
-			game.client_server.sendData(packet.getData());
-			t.update();
-			while (t.getTimeS() < TIME_TIMEOUT_S) {
-				if (valid_login == 1) {
-					return true;
-				}
-				if (valid_login == 0) {
-					lblInvalidUsernameOr.setVisible(true);
-					lblUnnableToConnect.setVisible(false);
-					return false;
-				}
-			}
-		}
-		lblInvalidUsernameOr.setVisible(false);
-		lblUnnableToConnect.setVisible(true);
-		return false;
+//		Packet000Login packet = new Packet000Login(txtName.getText(), passwordField.getText());
+//		Timer t = new Timer();
+//		t.start();
+//		for (int i = 0; i < 5; i++) {
+//			game.client.sendData(packet.getData());
+//			t.update();
+//			while (t.getTimeS() < 2) {
+//				if (valid_login == 1) return true;
+//				if (valid_login == 0) {
+//					lblInvalidUsernameOr.setVisible(true);
+//					lblUnnableToConnect.setVisible(false);
+//					return false;
+//				}
+//			}
+//		}
+//		lblInvalidUsernameOr.setVisible(false);
+//		lblUnnableToConnect.setVisible(true);
+//		return false;
+		return true;
 	}
 	public void launchGame(){
 		if(checkConnection()){

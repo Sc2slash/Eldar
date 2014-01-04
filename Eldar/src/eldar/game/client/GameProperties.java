@@ -9,10 +9,10 @@ import java.util.Properties;
 
 public class GameProperties {
 	
-	public static final Dimension[] resolutions = {new Dimension(960,720), new Dimension(640,480), new Dimension(480,360), new Dimension( 360, 270), new Dimension(288,216) };
+	public static final float[] resolutionScales = { 1f, 1.25f, 1.5f, 1.75f, 2f};
 	public static final Dimension[] windowSizes = {new Dimension(1920, 1080), new Dimension(1360,768), new Dimension(1280, 1024), new Dimension(1280, 800), new Dimension(1024, 768) };
 	
-
+	
 	
 	private String propertiesPath;
 	//Graphics

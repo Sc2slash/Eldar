@@ -3,7 +3,7 @@ package eldar.game.client.net.packets;
 public abstract class Packet {
 	
 	public static enum PacketTypes {
-		INVALID(-1), LOGIN(000), LOGIN_CONFIRM(001), DISCONNECT(002), PING(003), CONNECT(004), CONNECTION_SUCCEEDED(005), CHECK_CONNECTION(006);
+		INVALID(-1), LOGIN(000), LOGIN_CONFIRM(001), DISCONNECT(002);
 		
 		private int packetID;
 		private PacketTypes(int packetID) {
@@ -25,8 +25,7 @@ public abstract class Packet {
 	
 	public String[] readData(byte[] data) {
 		String message = new String(data).trim().substring(3);
-		message = message.substring(0, message.length()-1);
-		String message_parts[] = message.split((new Character((char)254)).toString());
+		String message_parts[] = message.split("&");
 		return message_parts;
 	}
 	
@@ -45,25 +44,6 @@ public abstract class Packet {
 			}
 		}
 		return PacketTypes.INVALID;
-	}
-	
-	public int parseToInt(String s) {
-		int ret = 0, counter = 1;
-		for (char c : s.toCharArray()) {
-			ret += (int)c * Math.pow(253, s.length()-counter);
-			counter++;
-		}
-		return ret;
-	}
-	
-	public String intToString(int i) {
-		if (i == 0) return (new Character((char)0)).toString();
-		String s = "";
-		while (i > 0) {
-			s += (char) (i % 253);
-			i /= 253;
-		}
-		return new StringBuffer(s).reverse().toString();
 	}
 	
 }

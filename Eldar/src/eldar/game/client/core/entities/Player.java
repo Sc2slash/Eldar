@@ -1,10 +1,6 @@
 package eldar.game.client.core.entities;
 
-public class Player {
-
-	public String username;
+public class Player{
+	private Entity itemHelmet, itemChest, itemLeggins, itemGloves, itemRightWeapon, itemLeftWeapon;
 	
-	public Player(String username) {
-		this.username = username;
-	}
 }

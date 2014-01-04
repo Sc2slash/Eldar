@@ -3,37 +3,26 @@ package eldar.game.client.launcher;
 import java.awt.Checkbox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import eldar.game.client.Game;
 import eldar.game.client.GameProperties;
-import eldar.game.client.Resources;
 
 public class OptionWindow extends JFrame {
 
@@ -47,7 +36,7 @@ public class OptionWindow extends JFrame {
 	private JSlider sliderEffectsVolume;
 	private NumberTextField txtVoicesVolume;
 	private JSlider sliderVoicesVolume;
-	private JTextField txtMaxFps;
+	private NumberTextField txtMaxFps;
 	private Checkbox checkboxDisableSound;
 	private Checkbox checkboxFullscreen;
 	private Checkbox checkLanguageFilter;
@@ -82,15 +71,12 @@ public class OptionWindow extends JFrame {
 		lblResolution.setBounds(37, 30, 59, 16);
 		layeredPane.add(lblResolution);
 		
-		String[] resArray = new String[GameProperties.resolutions.length];
-		for(int i = 0; i < resArray.length; i++){
-			resArray[i] = GameProperties.resolutions[i].width + "x" + GameProperties.resolutions[i].height;
-		}
+		
 		cmbResolution = new JComboBox();
-		cmbResolution.setModel(new DefaultComboBoxModel(resArray));
-		cmbResolution.setBounds(37, 48, 75, 22);
+		cmbResolution.setModel(new DefaultComboBoxModel(new String[]{"Super High", "High", "Medium", "Low", "Super Low"}));
+		cmbResolution.setBounds(37, 48, 90, 22);
 		layeredPane.add(cmbResolution);
-		cmbResolution.setSelectedIndex(Resources.gameProperties.resolution);
+		cmbResolution.setSelectedIndex(Game.gameProperties.resolution);
 		
 		JLabel lblWindowSize = new JLabel("Window size");
 		lblWindowSize.setBounds(37, 83, 72, 16);
@@ -104,62 +90,30 @@ public class OptionWindow extends JFrame {
 		cmbWindow.setModel(new DefaultComboBoxModel(winSizeArray));
 		cmbWindow.setBounds(37, 101, 89, 22);
 		layeredPane.add(cmbWindow);
-		cmbWindow.setSelectedIndex(Resources.gameProperties.windowSize);
+		cmbWindow.setSelectedIndex(Game.gameProperties.windowSize);
 		
 		checkboxFullscreen = new Checkbox("Fullscreen");
 		checkboxFullscreen.setBounds(37, 141, 127, 25);
 		layeredPane.add(checkboxFullscreen);
-		checkboxFullscreen.setState(Resources.gameProperties.fullscreen);
+		checkboxFullscreen.setState(Game.gameProperties.fullscreen);
 		
 		JLabel lblMaxFps = new JLabel("Max Fps");
 		lblMaxFps.setBounds(275, 30, 56, 16);
 		layeredPane.add(lblMaxFps);
 		
-		txtMaxFps = new JTextField();
+		txtMaxFps = new NumberTextField(Game.gameProperties.maxFps, 1, 3000);
 		txtMaxFps.setBounds(275, 48, 59, 22);
 		layeredPane.add(txtMaxFps);
 		txtMaxFps.setColumns(10);
-		txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
-		txtMaxFps.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int i = -1;
-				try{
-					i = Integer.parseInt(txtMaxFps.getText());
-					if(i <= 0){
-						txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
-					}
-				}catch(NumberFormatException ex){
-					txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
-				}
-				
-			}
-		});
-		txtMaxFps.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				int i = -1;
-				try{
-					i = Integer.parseInt(txtMaxFps.getText());
-					if(i < 0){
-						txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
-					}
-				}catch(NumberFormatException ex){
-					txtMaxFps.setText(Integer.toString(Resources.gameProperties.maxFps));
-				}
-				
-			}
-			public void focusGained(FocusEvent arg0) {
-				
-			}
-		});
+		txtMaxFps.setText(Integer.toString(Game.gameProperties.maxFps));
+		
 		JLayeredPane layeredPane_1 = new JLayeredPane();
 		tabbedPane.addTab("Audio", null, layeredPane_1, null);
 		
 		sliderMasterVolume = new JSlider();
 		sliderMasterVolume.setBounds(29, 48, 257, 23);
 		layeredPane_1.add(sliderMasterVolume);
-		sliderMasterVolume.setValue(Resources.gameProperties.masterVolume);
+		sliderMasterVolume.setValue(Game.gameProperties.masterVolume);
 		sliderMasterVolume.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				txtMasterVolume.setText(Integer.toString(sliderMasterVolume.getValue()));
@@ -174,13 +128,13 @@ public class OptionWindow extends JFrame {
 		txtMasterVolume.setBounds(297, 48, 49, 22);
 		layeredPane_1.add(txtMasterVolume);
 		txtMasterVolume.setColumns(10);
-		txtMasterVolume.setText(Integer.toString(Resources.gameProperties.masterVolume));
+		txtMasterVolume.setText(Integer.toString(Game.gameProperties.masterVolume));
 		
 		
 		sliderMusicVolume = new JSlider();
 		sliderMusicVolume.setBounds(29, 88, 257, 23);
 		layeredPane_1.add(sliderMusicVolume);
-		sliderMusicVolume.setValue(Resources.gameProperties.musicVolume);
+		sliderMusicVolume.setValue(Game.gameProperties.musicVolume);
 		sliderMusicVolume.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				txtMusicVolume.setText(Integer.toString(sliderMusicVolume.getValue()));
@@ -195,12 +149,12 @@ public class OptionWindow extends JFrame {
 		txtMusicVolume.setBounds(297, 88, 49, 22);
 		layeredPane_1.add(txtMusicVolume);
 		txtMusicVolume.setColumns(10);
-		txtMusicVolume.setText(Integer.toString(Resources.gameProperties.musicVolume));
+		txtMusicVolume.setText(Integer.toString(Game.gameProperties.musicVolume));
 		
 		sliderEffectsVolume = new JSlider();
 		sliderEffectsVolume.setBounds(29, 128, 257, 23);
 		layeredPane_1.add(sliderEffectsVolume);
-		sliderEffectsVolume.setValue(Resources.gameProperties.effectsVolume);
+		sliderEffectsVolume.setValue(Game.gameProperties.effectsVolume);
 		sliderEffectsVolume.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				txtEffectsVolume.setText(Integer.toString(sliderEffectsVolume.getValue()));
@@ -215,11 +169,11 @@ public class OptionWindow extends JFrame {
 		txtEffectsVolume.setBounds(297, 128, 49, 22);
 		layeredPane_1.add(txtEffectsVolume);
 		txtEffectsVolume.setColumns(10);
-		txtEffectsVolume.setText(Integer.toString(Resources.gameProperties.effectsVolume));
+		txtEffectsVolume.setText(Integer.toString(Game.gameProperties.effectsVolume));
 		sliderVoicesVolume = new JSlider();
 		sliderVoicesVolume.setBounds(29, 168, 257, 23);
 		layeredPane_1.add(sliderVoicesVolume);
-		sliderVoicesVolume.setValue(Resources.gameProperties.voicesVolume);
+		sliderVoicesVolume.setValue(Game.gameProperties.voicesVolume);
 		sliderVoicesVolume.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				txtVoicesVolume.setText(Integer.toString(sliderVoicesVolume.getValue()));
@@ -234,7 +188,7 @@ public class OptionWindow extends JFrame {
 		txtVoicesVolume.setBounds(297, 168, 49, 22);
 		layeredPane_1.add(txtVoicesVolume);
 		txtVoicesVolume.setColumns(10);
-		txtVoicesVolume.setText(Integer.toString(Resources.gameProperties.voicesVolume));
+		txtVoicesVolume.setText(Integer.toString(Game.gameProperties.voicesVolume));
 		
 		checkboxDisableSound = new Checkbox("Disable Sound");
 		checkboxDisableSound.setBounds(34, 207, 108, 24);
@@ -245,7 +199,7 @@ public class OptionWindow extends JFrame {
 			}
 		});
 		
-		checkboxDisableSound.setState(Resources.gameProperties.disableSound);
+		checkboxDisableSound.setState(Game.gameProperties.disableSound);
 		checkSound();
 		
 		JLayeredPane layeredPane_2 = new JLayeredPane();
@@ -281,23 +235,24 @@ public class OptionWindow extends JFrame {
 			}
 		});
 	}
+	
 	public void saveProperties(){
-		Resources.gameProperties.windowSize = cmbWindow.getSelectedIndex();
-		Resources.gameProperties.resolution = cmbResolution.getSelectedIndex();
-		Resources.gameProperties.fullscreen = checkboxFullscreen.getState();
-		Resources.gameProperties.maxFps = Integer.parseInt(txtMaxFps.getText());
+		Game.gameProperties.windowSize = cmbWindow.getSelectedIndex();
+		Game.gameProperties.resolution = cmbResolution.getSelectedIndex();
+		Game.gameProperties.fullscreen = checkboxFullscreen.getState();
+		Game.gameProperties.maxFps = Integer.parseInt(txtMaxFps.getText());
 		//Audio
-		Resources.gameProperties.masterVolume = sliderMasterVolume.getValue();
-		Resources.gameProperties.musicVolume = sliderMusicVolume.getValue();
-		Resources.gameProperties.effectsVolume = sliderEffectsVolume.getValue();
-		Resources.gameProperties.voicesVolume = sliderVoicesVolume.getValue();
-		Resources.gameProperties.disableSound = checkboxDisableSound.getState();
+		Game.gameProperties.masterVolume = sliderMasterVolume.getValue();
+		Game.gameProperties.musicVolume = sliderMusicVolume.getValue();
+		Game.gameProperties.effectsVolume = sliderEffectsVolume.getValue();
+		Game.gameProperties.voicesVolume = sliderVoicesVolume.getValue();
+		Game.gameProperties.disableSound = checkboxDisableSound.getState();
 		//Gameplay
-		Resources.gameProperties.languageFilter = checkLanguageFilter.getState();
-		Resources.gameProperties.includeTips = checkEnableTips.getState();
-		Resources.gameProperties.generalChat = checkGeneralChat.getState();
+		Game.gameProperties.languageFilter = checkLanguageFilter.getState();
+		Game.gameProperties.includeTips = checkEnableTips.getState();
+		Game.gameProperties.generalChat = checkGeneralChat.getState();
 		
-		Resources.gameProperties.writeProperties();
+		Game.gameProperties.writeProperties();
 		dispose();
 	}
 	public void resetProperties(){

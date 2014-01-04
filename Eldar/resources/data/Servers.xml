@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Servers>
+	<Aglarond IP="localhost" Port="8192"></Aglarond>
+	<Orodruin IP="localhost" Port="8684"></Orodruin>
+	<Ethuil IP="localhost" Port="4791"></Ethuil>
+</Servers>

@@ -7,22 +7,20 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 public class Window extends Canvas{
-	private int scale;
-	private Dimension windowSize, canvasSize;
+	private float scale;
+	private Dimension windowSize;
 	private boolean resizable;
 	private String caption;
 	private BufferedImage icon;
 	private boolean fullscreen;
 	private JFrame frame;
 	
-	public Window(int width, int height, int scale, boolean resizable, boolean fullscreen, String caption, BufferedImage icon){
-		this.canvasSize = new Dimension(width, height);
-		this.scale = scale;
+	public Window(int width, int height,boolean resizable, boolean fullscreen, String caption, BufferedImage icon){
 		this.resizable = resizable;
 		this.fullscreen = fullscreen;
 		this.caption = caption;
 		this.icon = icon;
-		this.windowSize = new Dimension(width*scale, height*scale);
+		this.windowSize = new Dimension(width,height);
 		//JFrame stuff
 		this.frame = new JFrame(caption);
 		if(fullscreen){
@@ -54,17 +52,11 @@ public class Window extends Canvas{
 		this.frame.setIconImage(icon);
 	}
 	//Get
-	public Dimension getCanvasSize(){
-		return canvasSize;
-	}
 	public boolean isResizable(){
 		return resizable;
 	}
 	public String getCaption(){
 		return caption;
-	}
-	public int getScale(){
-		return scale;
 	}
 	public BufferedImage getIcon(){
 		return icon;
