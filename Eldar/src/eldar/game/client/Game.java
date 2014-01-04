@@ -6,9 +6,14 @@ import java.awt.image.BufferStrategy;
 import eldar.game.client.core.graphics.Screen;
 import eldar.game.client.core.graphics.Window;
 import eldar.game.client.launcher.Launcher;
+import eldar.game.client.net.ClientServer;
 
 public class Game implements Runnable{
 
+	public String SERVER_ADDRESS = new String("localhost");
+	
+	public ClientServer client_server = new ClientServer(this, SERVER_ADDRESS);
+	
 	public Window window;
 	public Screen screen;
 	public Launcher launcher;
@@ -17,6 +22,8 @@ public class Game implements Runnable{
 	private boolean running = false;
 	
 	public Game(){
+		client_server.start();
+		
 		launcher = new Launcher(this);
 		launcher.start();
 	}

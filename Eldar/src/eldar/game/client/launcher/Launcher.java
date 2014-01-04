@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,8 +16,13 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import eldar.game.client.Game;
+import eldar.game.client.net.packets.Packet000Login;
+import eldar.game.utilities.Timer;
 
 public class Launcher extends JFrame {
+
+	public int valid_login;
+	
 	private JTextField txtName;
 	private JPasswordField passwordField;
 	
@@ -29,6 +35,7 @@ public class Launcher extends JFrame {
 	public Launcher(Game game) {
 		this.game = game;
 		this.optionWindow = new OptionWindow();
+
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -104,11 +111,37 @@ public class Launcher extends JFrame {
 	public void openOptions(){
 		optionWindow.start();
 	}
-	public boolean checkConnection(){
-		return true;
+	public boolean checkConnection() {
+		if (game.client_server.pingMS() != -1) {
+			return true;
+		}
+		lblInvalidUsernameOr.setVisible(false);
+		lblUnnableToConnect.setVisible(true);
+		return false;
 	}
 	public boolean checkLogin(){
-		return true;
+		int TIME_TIMEOUT_S = 2;
+		valid_login = -1;
+		Packet000Login packet = new Packet000Login(txtName.getText(), passwordField.getText(), game.client_server.connection_id);
+		Timer t = new Timer();
+		t.start();
+		for (int i = 0; i < 5; i++) {
+			game.client_server.sendData(packet.getData());
+			t.update();
+			while (t.getTimeS() < TIME_TIMEOUT_S) {
+				if (valid_login == 1) {
+					return true;
+				}
+				if (valid_login == 0) {
+					lblInvalidUsernameOr.setVisible(true);
+					lblUnnableToConnect.setVisible(false);
+					return false;
+				}
+			}
+		}
+		lblInvalidUsernameOr.setVisible(false);
+		lblUnnableToConnect.setVisible(true);
+		return false;
 	}
 	public void launchGame(){
 		if(checkConnection()){
@@ -117,14 +150,6 @@ public class Launcher extends JFrame {
 				optionWindow.dispose();
 				game.launch();
 			}
-			else{
-				lblInvalidUsernameOr.setVisible(true);
-				lblUnnableToConnect.setVisible(false);
-			}
-		}
-		else{
-			lblInvalidUsernameOr.setVisible(false);
-			lblUnnableToConnect.setVisible(true);
 		}
 	}
 }
