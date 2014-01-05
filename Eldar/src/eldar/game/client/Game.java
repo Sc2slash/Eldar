@@ -16,15 +16,16 @@ import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class Game implements Runnable{
 	
-	public String SERVER_ADDRESS = new String("25.155.82.122");
+	public static String SERVER_ADDRESS = new String("25.155.33.49");
 
 	public static Window window;
 	public static Launcher launcher;
 	public static Level curLvl;
-	public static ClientServer client;
+	public static ClientServer client_server;
 	public static InputHandler inputHandler;
 	public static GameProperties gameProperties;
 	public static Resources gameResources;
+	
 	private boolean running = false;
 	private TextArea textArea;
 	private Thread thread;
@@ -34,8 +35,8 @@ public class Game implements Runnable{
 	public Game(){
 		gameResources = new Resources();
 		gameProperties = gameResources.gameProperties;
-		client = new ClientServer(this, SERVER_ADDRESS);
-		client.start();
+		client_server = new ClientServer(this, SERVER_ADDRESS);
+		client_server.start();
 		launcher = new Launcher(this);
 		launcher.start();
 	}
