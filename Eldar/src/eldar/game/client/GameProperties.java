@@ -10,6 +10,7 @@ import java.util.Properties;
 public class GameProperties {
 	
 	public static final float[] resolutionScales = { 1f, 1.25f, 1.5f, 1.75f, 2f};
+	public static final float[] interfaceScales = { 1f, 1.25f, 1.5f, 1.75f, 2f};
 	public static final Dimension[] windowSizes = {new Dimension(1920, 1080), new Dimension(1360,768), new Dimension(1280, 1024), new Dimension(1280, 800), new Dimension(1024, 768) };
 	
 	

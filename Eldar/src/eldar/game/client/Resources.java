@@ -14,6 +14,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import eldar.game.client.core.entities.Entity;
+import eldar.game.utilities.Utilities;
+import eldar.game.utilities.geometry.Rectangle.Rect2i;
+
 public class Resources {
 
 
@@ -25,6 +29,7 @@ public class Resources {
 	
 	public Resources(){
 //		loadResources();
+		new Entity("0", Utilities.loadImage("/graphics/Image.png"), new Rect2i[]{new Rect2i(0,0,24,32), new Rect2i(24,0,24,32)},"NakedHuman");
 	}
 	public void loadResources(){
 		File fXmlFile = new File(resourcesPath+"data/Resource.xml");

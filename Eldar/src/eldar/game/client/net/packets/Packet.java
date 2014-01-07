@@ -1,9 +1,14 @@
 package eldar.game.client.net.packets;
 
+import java.util.Arrays;
+
 public abstract class Packet {
+
+	protected final char sep = (char) 126;
+	protected final char end = (char) 127;
 	
 	public static enum PacketTypes {
-		INVALID(-1), LOGIN(000), LOGIN_CONFIRM(001), DISCONNECT(002), PING(003), CONNECT(004), CONNECTION_SUCCEEDED(005), CHECK_CONNECTION(006);
+		INVALID(-1), LOGIN(0), LOGIN_CONFIRM(1), DISCONNECT(2), PING(3), CONNECT(4), CONNECTION_SUCCEEDED(5), CHECK_CONNECTION(6), NEW_ENTITY(7);
 		
 		private int packetID;
 		private PacketTypes(int packetID) {
@@ -22,17 +27,19 @@ public abstract class Packet {
 	}
 	
 	public abstract byte[] getData();
-	
-	public String[] readData(byte[] data) {
-		String message = new String(data).trim().substring(3);
+
+	public static String[] readData(byte[] data) {
+		String message = new String(data).trim();
 		message = message.substring(0, message.length()-1);
-		String message_parts[] = message.split((new Character((char)254)).toString());
-		return message_parts;
+		String message_parts[] = message.split((new Character((char)126)).toString());
+		if (message_parts.length == 0)
+			return Arrays.copyOfRange(message_parts, 0, 0);
+		return Arrays.copyOfRange(message_parts, 1, message_parts.length);
 	}
 	
 	public static PacketTypes lookupPacket(String id) {
 		try {
-			return lookupPacket(Integer.parseInt(id));
+			return lookupPacket(parseToInt(id));
 		} catch (NumberFormatException e) {
 			return PacketTypes.INVALID;
 		}
@@ -47,23 +54,42 @@ public abstract class Packet {
 		return PacketTypes.INVALID;
 	}
 	
-	public int parseToInt(String s) {
+	public static int parseToInt(String s) {
 		int ret = 0, counter = 1;
 		for (char c : s.toCharArray()) {
-			ret += (int)c * Math.pow(253, s.length()-counter);
+			ret += (int)c * Math.pow(125, s.length()-counter);
 			counter++;
 		}
+		
 		return ret;
 	}
 	
-	public String intToString(int i) {
+	public static String intToString(int i) {
 		if (i == 0) return (new Character((char)0)).toString();
 		String s = "";
 		while (i > 0) {
-			s += (char) (i % 253);
-			i /= 253;
+			s += (char) (i % 125);
+			i /= 125;
 		}
 		return new StringBuffer(s).reverse().toString();
 	}
 	
+	public static PacketTypes getPrefix(byte[] packet) {
+		String prefix = "";
+		for (byte b : packet) {
+			byte temp = b;
+			System.out.println(temp);
+			int i = b;
+			if ((char)b == (char)126 || (char)b == (char)127) {
+				break;
+			}
+			
+			prefix += (char)b;
+		}
+//		for (byte c : prefix.getBytes()) {
+//			System.out.println((int)c);
+//		}
+		System.out.println(String.valueOf(Integer.toString(5)));
+		return lookupPacket(parseToInt(prefix));
+	}
 }

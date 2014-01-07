@@ -1,11 +1,15 @@
 package eldar.game.client.core.levels;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import eldar.game.client.Game;
+import eldar.game.client.core.entities.Entity;
 import eldar.game.client.core.levels.tiles.Tileset;
 import eldar.game.utilities.GameException;
+import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class Level {
 	
@@ -17,6 +21,8 @@ public class Level {
 	private int tileWidth, tileHeight;
 	private float scale;
 	
+	private List<Entity> entities = new ArrayList<Entity>();
+	
 	public Level(Game game, String path){
 		this.game = game;
 		loadLevel(path);
@@ -26,7 +32,6 @@ public class Level {
 		sc = new Scanner(Level.class.getResourceAsStream(path));
 		String header = sc.next();
 		if(!header.equals("tm")) throw new GameException("Invalid map file " + path);
-//		sc.nextLine();
 		width = sc.nextInt();
 		height= sc.nextInt();
 		terrain = new int[width*height];
@@ -38,6 +43,7 @@ public class Level {
 		for(int i = 0; i < terrain.length; i++){
 			terrain[i] = sc.nextInt()-1;
 		}
+		entities.add(new Entity(0, "0", 0,new Vec2f(0,0), 1));
 	}
 	public void drawLevel(Graphics g){
 		for(int y = (int) (Game.cameraLocation.y/tileHeight), yLoc = (int) -(Game.cameraLocation.y%tileHeight); y < height && yLoc < game.window.getHeight(); y++, yLoc += tileHeight){
@@ -47,10 +53,23 @@ public class Level {
 					tileset.renderTile(xLoc, yLoc, g, scale, terrain[x+y*width]);
 			}
 		}
+		for(int i = 0; i < entities.size(); i++){
+			entities.get(i).render(g, scale);
+		}
 	}
-	public void setScale(float i){
-		tileWidth = (int) (tileset.getTileWidth()*i);
-		tileHeight = (int) (tileset.getTileHeiht()*i);
-		scale = i;
+	public void setScale(float s){
+		tileWidth = (int) (tileset.getTileWidth()*s);
+		tileHeight = (int) (tileset.getTileHeiht()*s);
+		scale = s;
 	}
+	public void addEntity(Entity entity){
+		entities.add(entity);
+	}
+	public void removeEntity(int serverID){
+		for(int i = 0; i < entities.size(); i++){
+			if(serverID == entities.get(i).serverID)
+				entities.remove(i);
+		}
+	}
+	
 }

@@ -29,7 +29,6 @@ public class InputHandler implements KeyListener, MouseListener{
 	public boolean getKey(int keyCode){
 		return keys[keyCode];
 	}
-
 	public void mouseClicked(MouseEvent e) {
 		
 	}
@@ -47,4 +46,5 @@ public class InputHandler implements KeyListener, MouseListener{
 	public void mouseReleased(MouseEvent e) {
 		
 	}
+	
 }

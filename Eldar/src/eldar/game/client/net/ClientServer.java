@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import eldar.game.client.Game;
+import eldar.game.client.core.entities.Entity;
 import eldar.game.client.net.packets.Packet;
 import eldar.game.client.net.packets.Packet.PacketTypes;
 import eldar.game.client.net.packets.Packet001Login_confirm;
@@ -16,13 +17,14 @@ import eldar.game.client.net.packets.Packet004Connect;
 import eldar.game.client.net.packets.Packet005Connection_succeeded;
 import eldar.game.client.net.packets.Packet006Check_connection;
 import eldar.game.utilities.Timer;
+import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class ClientServer extends Thread {
 	
-	public int PACKET_SIZE = 1024;
-	public int SERVER_PORT = 8124;
+	public final int PACKET_SIZE = 1024;
+	public final int SERVER_PORT = 8124;
 	
-	public int connection_id;
+	public int connection_id = -1;
 	
 	public long start_ping_time;
 	public boolean ping_succeeded;
@@ -30,6 +32,8 @@ public class ClientServer extends Thread {
 	private Game game;
 	private InetAddress server_ip;
 	private DatagramSocket socket;
+	
+	public boolean thread_is_running = false;
 	
 	public ClientServer(Game game, String server_ip) {
 		this.game = game;
@@ -41,26 +45,27 @@ public class ClientServer extends Thread {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		connect();
 	}
 	
 	public void run() {
-		while (true) {
+		thread_is_running = true;
+		while (thread_is_running) {
 			byte[] data = new byte[PACKET_SIZE];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
+				System.out.println("Trying to receive packet");
 				socket.receive(packet);
+				System.out.println("Received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("SERVER > " + new String(packet.getData()));
+			if (!thread_is_running) break;
 			parsePacket(packet.getData());
 		}
  	}
 	
 	public void parsePacket(byte[] data) {
-		String message = (new String(data)).trim();
-		PacketTypes type = Packet.lookupPacket(message.substring(0, 3));
+		PacketTypes type = Packet.getPrefix(data);
 		switch (type) {
 		default:
 		case INVALID:
@@ -70,6 +75,7 @@ public class ClientServer extends Thread {
 		case LOGIN_CONFIRM:
 		{
 			Packet001Login_confirm packet = new Packet001Login_confirm(data);
+			System.out.println("LOGIN_CONFIRM - " + packet.get_is_valid());
 			game.launcher.valid_login = packet.get_is_valid();
 			break;
 		}
@@ -82,10 +88,30 @@ public class ClientServer extends Thread {
 		{
 			Packet006Check_connection response = new Packet006Check_connection(connection_id);
 			sendData(response.getData());
+			break;
 		}
+		case CONNECTION_SUCCEEDED: 
+		{
+			Packet005Connection_succeeded response = new Packet005Connection_succeeded(data);
+			System.out.println("IdentifierID = " + response.getIdentifierID());
+			this.connection_id = response.getIdentifierID();
+		}
+			break;
+		case NEW_ENTITY:
+			addEntity(data);
+			break;
+//		case UPDATE_ENTITY:
+//			break;
+//		case REMOVE_ENTITY:
+//			break;
 		}
 	}
 	
+	public void addEntity(byte[] data) {
+		String[] args = Packet.readData(data);
+		Game.curLvl.addEntity(new Entity(Integer.parseInt(args[0]),args[1], Integer.parseInt(args[2]), new Vec2f(Float.parseFloat(args[3]), Float.parseFloat(args[4])), Integer.parseInt(args[5])));
+	}
+
 	public void sendData(byte[] data) {
 		DatagramPacket packet = new DatagramPacket(data, data.length, server_ip, SERVER_PORT);
 		try {
@@ -95,30 +121,9 @@ public class ClientServer extends Thread {
 		}
 	}
 	
-	//Connects to the server, receiving an unique identifier id
-	public void connect() {
-		Packet004Connect connect = new Packet004Connect();
-		sendData(connect.getData());
-		byte[] data = new byte[PACKET_SIZE];
-		DatagramPacket packet = new DatagramPacket(data, data.length);
-		try {
-			socket.receive(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		String message = (new String(data)).trim();
-		PacketTypes type = Packet.lookupPacket(message.substring(0, 3));
-		switch(type) {
-		case CONNECTION_SUCCEEDED:
-		{
-			Packet005Connection_succeeded response = new Packet005Connection_succeeded(data);
-			System.out.println("IdentifierID = " + response.getIdentifierID());
-			connection_id = response.getIdentifierID();
-		}
-			break;
-		default:
-			connection_id = -1;
-		}
+	public void kill() {
+		thread_is_running = false;
+		this.interrupt();
 	}
  	
 	//Pings the server, and returns the ping time in milliseconds

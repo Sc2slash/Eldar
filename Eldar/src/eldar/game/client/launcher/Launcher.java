@@ -16,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import eldar.game.client.Game;
+import eldar.game.client.net.Ping;
 import eldar.game.client.net.packets.Packet000Login;
 import eldar.game.utilities.Timer;
 
@@ -112,7 +113,15 @@ public class Launcher extends JFrame {
 		optionWindow.start();
 	}
 	public boolean checkConnection() {
-		if (game.client_server.pingMS() != -1) {
+		if (!game.client_server_is_running()) {
+			game.connectToServer();
+		}
+		if (!game.client_server_is_running()) {
+			return false;
+		}
+		Ping ping = new Ping(game);
+		if (ping.pingMS() != -1) {
+			System.out.println("Returning true");
 			return true;
 		}
 		lblInvalidUsernameOr.setVisible(false);

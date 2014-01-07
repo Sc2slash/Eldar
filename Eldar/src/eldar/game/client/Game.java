@@ -12,22 +12,27 @@ import eldar.game.client.core.input.InputHandler;
 import eldar.game.client.core.levels.Level;
 import eldar.game.client.launcher.Launcher;
 import eldar.game.client.net.ClientServer;
+import eldar.game.client.net.packets.Packet004Connect;
+import eldar.game.utilities.Timer;
 import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class Game implements Runnable{
 	
-	public static String SERVER_ADDRESS = new String("25.155.33.49");
+	public static String SERVER_ADDRESS = new String("localhost");
 
+	public static boolean debugMode = true;
 	public static Window window;
 	public static Launcher launcher;
 	public static Level curLvl;
-	public static ClientServer client_server;
 	public static InputHandler inputHandler;
 	public static GameProperties gameProperties;
 	public static Resources gameResources;
 	
+	public static ClientServer client_server;
+	public boolean client_server_is_running;
+	
 	private boolean running = false;
-	private TextArea textArea;
+
 	private Thread thread;
 	
 	public static Vec2f cameraLocation;
@@ -35,8 +40,7 @@ public class Game implements Runnable{
 	public Game(){
 		gameResources = new Resources();
 		gameProperties = gameResources.gameProperties;
-		client_server = new ClientServer(this, SERVER_ADDRESS);
-		client_server.start();
+		this.connectToServer();
 		launcher = new Launcher(this);
 		launcher.start();
 	}
@@ -62,7 +66,6 @@ public class Game implements Runnable{
 		Graphics g = bs.getDrawGraphics();
 		g.fillRect(0,0,window.getWidth(), window.getHeight());
 		curLvl.drawLevel(g);
-		textArea.drawTextArea(g);
 		g.dispose();
 		bs.show();
 	}
@@ -99,12 +102,33 @@ public class Game implements Runnable{
 		window.launchWindow();
 		curLvl = new Level(this, "/levels/test.txt");
 		curLvl.setScale(GameProperties.resolutionScales[gameProperties.resolution]);
-		textArea = new TextArea();
 		cameraLocation = new Vec2f(0,0);
 		JTextField numberEnter = new JTextField("Enter numbers here", 20); 
 		window.getFrame().add(numberEnter);
 		start();
 	}
+	
+	public void connectToServer() {
+		client_server = new ClientServer(this, SERVER_ADDRESS);
+		client_server_is_running = true;
+		client_server.start();
+		Timer t = new Timer();
+		t.start();
+		Packet004Connect connect = new Packet004Connect();
+		client_server.sendData(connect.getData());
+		while (t.getTimeS() < 2 && client_server.connection_id == -1);
+		System.out.println(t.getTimeS());
+		
+		if (client_server.connection_id == -1) {
+			client_server_is_running = false;
+			client_server.kill();
+		}
+	}
+	
+	public boolean client_server_is_running() {
+		return (this.client_server_is_running);
+	}
+	
 	public static void main(String[] args) {
 		Game game = new Game();	
 	}
