@@ -16,6 +16,7 @@ import eldar.game.client.net.packets.Packet003Ping;
 import eldar.game.client.net.packets.Packet004Connect;
 import eldar.game.client.net.packets.Packet005Connection_succeeded;
 import eldar.game.client.net.packets.Packet006Check_connection;
+import eldar.game.client.net.packets.Packet007New_entity;
 import eldar.game.utilities.Timer;
 import eldar.game.utilities.geometry.Vector.Vec2f;
 
@@ -98,18 +99,15 @@ public class ClientServer extends Thread {
 		}
 			break;
 		case NEW_ENTITY:
-			addEntity(data);
+			Packet007New_entity.addEntity(data);
 			break;
 //		case UPDATE_ENTITY:
 //			break;
-//		case REMOVE_ENTITY:
-//			break;
+		case REMOVE_ENTITY:
+			String[] args = Packet.readData(data);
+			Game.curLvl.removeEntity(args[1]);
+			break;
 		}
-	}
-	
-	public void addEntity(byte[] data) {
-		String[] args = Packet.readData(data);
-		Game.curLvl.addEntity(new Entity(Integer.parseInt(args[0]),args[1], Integer.parseInt(args[2]), new Vec2f(Float.parseFloat(args[3]), Float.parseFloat(args[4])), Integer.parseInt(args[5])));
 	}
 
 	public void sendData(byte[] data) {

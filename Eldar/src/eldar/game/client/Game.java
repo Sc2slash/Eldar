@@ -6,9 +6,9 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JTextField;
 
-import eldar.game.client.core.graphics.TextArea;
+import eldar.game.client.core.gameinterface.Interface;
 import eldar.game.client.core.graphics.Window;
-import eldar.game.client.core.input.InputHandler;
+import eldar.game.client.core.input.KeyInputHandler;
 import eldar.game.client.core.levels.Level;
 import eldar.game.client.launcher.Launcher;
 import eldar.game.client.net.ClientServer;
@@ -18,15 +18,16 @@ import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class Game implements Runnable{
 	
-	public static String SERVER_ADDRESS = new String("localhost");
+	public static String SERVER_ADDRESS = new String("25.155.82.122");
 
 	public static boolean debugMode = true;
 	public static Window window;
 	public static Launcher launcher;
 	public static Level curLvl;
-	public static InputHandler inputHandler;
+	public static KeyInputHandler keyInputHandler;
 	public static GameProperties gameProperties;
 	public static Resources gameResources;
+	public static Interface gameInterface;
 	
 	public static ClientServer client_server;
 	public boolean client_server_is_running;
@@ -73,16 +74,16 @@ public class Game implements Runnable{
 	}
 	public void handleInput(){
 		//Temporary just to test map
-		if(inputHandler.getKey(KeyEvent.VK_UP)){
+		if(keyInputHandler.getKey(KeyEvent.VK_UP)){
 			cameraLocation.y -= 1;
 		}
-		if(inputHandler.getKey(KeyEvent.VK_DOWN)){
+		if(keyInputHandler.getKey(KeyEvent.VK_DOWN)){
 			cameraLocation.y += 1;
 		}
-		if(inputHandler.getKey(KeyEvent.VK_LEFT)){
+		if(keyInputHandler.getKey(KeyEvent.VK_LEFT)){
 			cameraLocation.x -= 1;
 		}
-		if(inputHandler.getKey(KeyEvent.VK_RIGHT)){
+		if(keyInputHandler.getKey(KeyEvent.VK_RIGHT)){
 			cameraLocation.x += 1;
 		}
 	}
@@ -98,7 +99,7 @@ public class Game implements Runnable{
 		running = true;
 		window = new Window(GameProperties.windowSizes[gameProperties.windowSize].width,
 				GameProperties.windowSizes[gameProperties.windowSize].height,false, gameProperties.fullscreen,"Eldar",null);
-		inputHandler = new InputHandler(this);
+		keyInputHandler = new KeyInputHandler(this);
 		window.launchWindow();
 		curLvl = new Level(this, "/levels/test.txt");
 		curLvl.setScale(GameProperties.resolutionScales[gameProperties.resolution]);

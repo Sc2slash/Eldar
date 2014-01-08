@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 import eldar.game.client.Game;
-import eldar.game.client.GameProperties;
 import eldar.game.utilities.GameException;
+import eldar.game.utilities.geometry.Rectangle.Rect2f;
 import eldar.game.utilities.geometry.Rectangle.Rect2i;
 import eldar.game.utilities.geometry.Vector.Vec2f;
 import eldar.game.utilities.geometry.Vector.Vec2i;
@@ -27,8 +27,8 @@ public class Entity {
 	
 	private static HashMap<String, Entity> entities = new HashMap<String, Entity>();
 	
-	public Vec2f location;
-	public int serverID;
+	public Rect2i box;
+	public String serverID;
 	public int type;
 	
 	public String name;
@@ -46,39 +46,66 @@ public class Entity {
 			throw new GameException("ID already being used:"+ID);
 		entities.put(ID, this);
 	}
-	public Entity(int serverID, String ID, int type, Vec2f location, int startAnimation){
+	public Entity(String serverID, String ID, int type, Rect2i box, int startAnimation){
 		if(!entities.containsKey(ID)) throw new GameException("Entity not yet created. ID:"+ID);
 		this.image = entities.get(ID).image;
 		this.animations = entities.get(ID).animations;
 		this.name = entities.get(ID).name;
 		this.serverID = serverID;
-		this.location = location;
+		this.box = box;
 		curAnimation = startAnimation;
 	}
-	public Entity(int serverID, String ID, int type, String name, Vec2f location, int startAnimation){
+	public Entity(String serverID, String ID, int type, String name, Rect2i box, int startAnimation){
 		if(!entities.containsKey(ID)) throw new GameException("Entity not yet created. ID:"+ID);
 		this.image = entities.get(ID).image;
 		this.animations = entities.get(ID).animations;
 		this.name = name;
 		this.serverID = serverID;
-		this.location = location;
+		this.box = box;
 		curAnimation = startAnimation;
 	}
 	
 	public void render(Graphics g, float scale){
-		Vec2i topLeft = new Vec2i((int)((location.x*scale-Game.cameraLocation.x)),(int)((location.y*scale-Game.cameraLocation.y)));
-		Vec2i botLeft = new Vec2i((int)((location.x*scale-Game.cameraLocation.x)+animations[curAnimation].w*scale),(int)((location.y*scale-Game.cameraLocation.y)+animations[curAnimation].h*scale));
+		Vec2i topLeft = new Vec2i((int)((box.x*scale-Game.cameraLocation.x*scale)),(int)((box.y*scale-Game.cameraLocation.y*scale)));
+		Vec2i botLeft = new Vec2i((int)((box.x*scale-Game.cameraLocation.x*scale)+box.w*scale),(int)((box.y*scale-Game.cameraLocation.y*scale)+box.h*scale));
 		
 		if(topLeft.x > Game.window.getWidth() || topLeft.y > Game.window.getHeight() || botLeft.x < 0 || botLeft.y < 0) return;
 		g.drawImage(image, topLeft.x, topLeft.y, botLeft.x, botLeft.y, 
 				animations[curAnimation].x, animations[curAnimation].y, animations[curAnimation].x+animations[curAnimation].w, animations[curAnimation].y+animations[curAnimation].h, null);
 		if(Game.debugMode){
 			g.setColor(Color.red);
-			g.drawRect(topLeft.x, topLeft.y, (int)(animations[curAnimation].w*scale), (int)(animations[curAnimation].h*scale));
+			g.drawRect(topLeft.x, topLeft.y, (int)(box.w*scale), (int)(box.h*scale));
 		}
 	}
 	public void updatePosition(int x, int y){
-		location.x = x;
-		location.y = y;
+		box.x = x;
+		box.y = y;
 	}
+	public void updateAnimation(int curAnimation){
+		if(curAnimation >= 0)
+			this.curAnimation = curAnimation;
+	}
+	public void updateType(int type){
+		if(type >= 0)
+			this.type = type;
+	}
+	public void update(Rect2i box, int type, int curAnimation, String name){
+		this.box = box;
+		if(type >= 0)
+			this.type = type;
+		if(curAnimation >= 0)
+			this.curAnimation = curAnimation;
+		if(name != null)
+			this.name = name;
+	}
+	public Rect2i getBox(){
+		return box;
+	}
+	public int getType(){
+		return type;
+	}
+	public String getServerID(){
+		return serverID;
+	}
+	
 }

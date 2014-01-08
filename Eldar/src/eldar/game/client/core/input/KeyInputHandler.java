@@ -4,19 +4,21 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import eldar.game.client.Game;
+import eldar.game.client.core.entities.Entity;
+import eldar.game.utilities.geometry.Vector.Vec2f;
 
-public class InputHandler implements KeyListener, MouseListener{
+public class KeyInputHandler implements KeyListener{
 
 	private Game game;
 	
 	private boolean keys[] = new boolean[256];
 	
-	public InputHandler(Game game){
+	public KeyInputHandler(Game game){
 		this.game = game;
 		game.window.addKeyListener(this);
-		game.window.addMouseListener(this);
 	}
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
@@ -28,23 +30,6 @@ public class InputHandler implements KeyListener, MouseListener{
 	}
 	public boolean getKey(int keyCode){
 		return keys[keyCode];
-	}
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-
-	public void mouseEntered(MouseEvent e) {
-		
-	}
-	
-	public void mouseExited(MouseEvent e) {
-		
-	}
-	public void mousePressed(MouseEvent e) {
-		
-	}
-	public void mouseReleased(MouseEvent e) {
-		
 	}
 	
 }

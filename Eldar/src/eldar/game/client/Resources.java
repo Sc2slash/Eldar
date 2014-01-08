@@ -1,7 +1,10 @@
 package eldar.game.client;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.MediaLocator;
 import javax.xml.parsers.DocumentBuilder;
@@ -27,34 +30,11 @@ public class Resources {
 //	public static GameProperties defaultGameProperties = new GameProperties("/data/.defaultproperties");
 	public MediaLocator testSong = new MediaLocator(Resources.class.getResource("/audio/test.mp3"));
 	
+	
 	public Resources(){
 //		loadResources();
 		new Entity("0", Utilities.loadImage("/graphics/Image.png"), new Rect2i[]{new Rect2i(0,0,24,32), new Rect2i(24,0,24,32)},"NakedHuman");
 	}
 	public void loadResources(){
-		File fXmlFile = new File(resourcesPath+"data/Resource.xml");
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = null;
-		Document doc = null;
-		try {
-			dBuilder = dbFactory.newDocumentBuilder();
-			doc = dBuilder.parse(fXmlFile);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		doc.getDocumentElement().normalize();
-	 
-		if(!doc.getDocumentElement().getNodeName().equals("Resources"))return;
-	 
-		NodeList nList = doc.getElementsByTagName("Characters");
-		for (int i = 0; i < nList.getLength(); i++) {
-			Node nNode = nList.item(i);
-			
-			if(nNode.getNodeType() == Node.ELEMENT_NODE){
-				Element element = (Element) nNode;
-				
-			}
-		}
 	}
 }
