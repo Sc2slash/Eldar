@@ -7,6 +7,7 @@ import java.util.Scanner;
 import eldar.game.client.Game;
 import eldar.game.client.core.entities.Entity;
 import eldar.game.client.core.levels.tiles.Tileset;
+import eldar.game.client.net.packets.Packet;
 import eldar.game.utilities.GameException;
 import eldar.game.utilities.Utilities;
 import eldar.game.utilities.geometry.Rectangle.Rect2i;
@@ -53,7 +54,7 @@ public class Level {
 			for(int x = (int) ((Game.cameraLocation.x*scale)/tileWidth), xLoc = (int) -((Game.cameraLocation.x*scale)%tileWidth); x < width && xLoc < game.window.getWidth(); x++, xLoc += tileWidth){
 				if(x < 0 || y < 0) continue;
 				if(terrain[x+y*width] != -1)
-					tileset.renderTile(xLoc, yLoc, g, scale, terrain[x+y*width]);
+					tileset.renderTile(xLoc, yLoc, g, terrain[x+y*width]);
 			}
 		}
 		for(Entity entity : entities.values()){
@@ -64,6 +65,7 @@ public class Level {
 		tileWidth = (int) (tileset.getTileWidth()*s);
 		tileHeight = (int) (tileset.getTileHeiht()*s);
 		scale = s;
+		tileset.setScale(s);
 	}
 	public void addEntity(Entity entity){
 		entities.put(entity.getServerID(), entity);
@@ -79,5 +81,24 @@ public class Level {
 				return entity;
 		}
 		return null;
+	}
+	public void addEntity(byte[] data) {
+		String[] args = Packet.readData(data);
+		//This can vary based on the number of arguments the entity constructor takes in
+		int numArguments = 8;
+		int numEntities = args.length/numArguments;
+		for(int i = 0; i < numEntities; i++){
+			Game.curLvl.addEntity(new Entity(Integer.toString(Packet.parseToInt(args[0+i*numArguments])),Integer.toString(Packet.parseToInt(args[1+i*numArguments])), Packet.parseToInt(args[2+i*numArguments]), new Rect2i(Packet.parseToInt(args[3+i*numArguments]), Packet.parseToInt(args[4+i*numArguments]), Packet.parseToInt(args[5+i*numArguments]), Packet.parseToInt(args[6+i*numArguments])), Packet.parseToInt(args[7+i*numArguments])));
+		}
+	}
+	public void updateEntity(byte[] data){
+		String[] args = Packet.readData(data);
+		int numArguments = 4;
+		int numEntities = args.length/numArguments;
+		for(int i = 0; i < numEntities; i++){
+			Entity entity = entities.get(Integer.toString(Packet.parseToInt(args[0+i*numArguments])));
+			entity.updatePosition(Packet.parseToInt(args[1+i*numArguments]), Packet.parseToInt(args[2+i*numArguments]));
+			entity.updateAnimation(Packet.parseToInt(args[3+i*numArguments]));
+		}
 	}
 }
