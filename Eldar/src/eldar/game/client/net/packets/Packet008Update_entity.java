@@ -11,7 +11,7 @@ public class Packet008Update_entity extends Packet{
 	}
 
 	public byte[] getData() {
-		return (intToString(6)+sep+intToString(Integer.parseInt(entity.serverID))+sep+intToString(entity.getBox().x)+sep+intToString(entity.getBox().y)).getBytes();
+		return (intToString(6)+sep+intToString(Integer.parseInt(entity.serverID))+sep+intToString(entity.getBox().x)+sep+intToString(entity.getBox().y)+sep+intToString(entity.getCurAnimation())+end).getBytes();
 	}
 	
 }
