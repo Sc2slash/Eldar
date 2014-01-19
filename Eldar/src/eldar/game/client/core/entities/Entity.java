@@ -7,59 +7,49 @@ import java.util.HashMap;
 
 import eldar.game.client.Game;
 import eldar.game.utilities.GameException;
-import eldar.game.utilities.geometry.Rectangle.Rect2f;
 import eldar.game.utilities.geometry.Rectangle.Rect2i;
-import eldar.game.utilities.geometry.Vector.Vec2f;
 import eldar.game.utilities.geometry.Vector.Vec2i;
 
 public class Entity {
 	
-	public static enum EntityTypes{
-		PLAYER(0), NPC(1), TRADER(2), HOSTILE(3);
-		int typeID;
-		private EntityTypes(int type){
-			this.typeID = type;
-		}
-		public int getTypeID(){
-			return typeID;
-		}
-	}
-	
-	private static HashMap<String, Entity> entities = new HashMap<String, Entity>();
+	protected static HashMap<String, Entity> entities = new HashMap<String, Entity>();
 	
 	public Rect2i box;
 	public String serverID;
-	public int type;
 	
 	public String name;
+	public String description;
 	public Rect2i animations[];
 	
-	private BufferedImage image;
+	protected BufferedImage image;
 
-	int curAnimation;
+	protected int curAnimation;
 	
-	public Entity(String ID, BufferedImage image, Rect2i[] animations, String name){
+	public Entity(String ID, BufferedImage image, Rect2i[] animations, String name, String description){
 		this.image = image;
 		this.animations= animations;
 		this.name = name;
+		this.description = description;
 		if(entities.containsKey(ID)) 
 			throw new GameException("ID already being used:"+ID);
 		entities.put(ID, this);
 	}
-	public Entity(String serverID, String ID, int type, Rect2i box, int startAnimation){
+	public Entity(String serverID, String ID, Rect2i box, int startAnimation){
 		if(!entities.containsKey(ID)) throw new GameException("Entity not yet created. ID:"+ID);
 		this.image = entities.get(ID).image;
 		this.animations = entities.get(ID).animations;
 		this.name = entities.get(ID).name;
+		this.description = entities.get(ID).description;
 		this.serverID = serverID;
 		this.box = box;
 		curAnimation = startAnimation;
 	}
-	public Entity(String serverID, String ID, int type, String name, Rect2i box, int startAnimation){
+	public Entity(String serverID, String ID,String name, String description, Rect2i box, int startAnimation){
 		if(!entities.containsKey(ID)) throw new GameException("Entity not yet created. ID:"+ID);
 		this.image = entities.get(ID).image;
 		this.animations = entities.get(ID).animations;
 		this.name = name;
+		this.description = description;
 		this.serverID = serverID;
 		this.box = box;
 		curAnimation = startAnimation;
@@ -77,6 +67,12 @@ public class Entity {
 			g.drawRect(topLeft.x, topLeft.y, (int)(box.w*scale), (int)(box.h*scale));
 		}
 	}
+	public void interact(){
+		
+	}
+	public void examine(){
+		System.out.println(description);
+	}
 	public void updatePosition(int x, int y){
 		box.x = x;
 		box.y = y;
@@ -85,14 +81,8 @@ public class Entity {
 		if(curAnimation >= 0)
 			this.curAnimation = curAnimation;
 	}
-	public void updateType(int type){
-		if(type >= 0)
-			this.type = type;
-	}
 	public void update(Rect2i box, int type, int curAnimation, String name){
 		this.box = box;
-		if(type >= 0)
-			this.type = type;
 		if(curAnimation >= 0)
 			this.curAnimation = curAnimation;
 		if(name != null)
@@ -101,11 +91,10 @@ public class Entity {
 	public Rect2i getBox(){
 		return box;
 	}
-	public int getType(){
-		return type;
-	}
 	public String getServerID(){
 		return serverID;
 	}
-	
+	public int getCurAnimation(){
+		return curAnimation;
+	}
 }

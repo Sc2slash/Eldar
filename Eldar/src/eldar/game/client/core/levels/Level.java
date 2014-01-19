@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import eldar.game.client.Game;
+import eldar.game.client.core.entities.Banker;
 import eldar.game.client.core.entities.Entity;
+import eldar.game.client.core.entities.Player;
+import eldar.game.client.core.entities.Trader;
 import eldar.game.client.core.levels.tiles.Tileset;
 import eldar.game.client.net.packets.Packet;
 import eldar.game.utilities.GameException;
@@ -18,6 +21,8 @@ public class Level {
 	Game game;
 	
 	private int ID;
+	
+	private String name;
 	
 	private int[] terrain;
 	private Tileset tileset;
@@ -32,8 +37,7 @@ public class Level {
 		loadLevel(path);
 	}
 	public void loadLevel(String path){
-		Scanner sc = null;
-		sc = new Scanner(Level.class.getResourceAsStream(path));
+		Scanner sc = new Scanner(Level.class.getResourceAsStream(path));
 		String header = sc.next();
 		if(!header.equals("tm")) throw new GameException("Invalid map file " + path);
 		width = sc.nextInt();
@@ -47,7 +51,10 @@ public class Level {
 		for(int i = 0; i < terrain.length; i++){
 			terrain[i] = sc.nextInt()-1;
 		}
-		entities.put("0", new Entity("0","0",0, new Rect2i(0, 0, 30, 30),0));
+		entities.put("0", new Banker("0","C0", new Rect2i(0, 0, 24, 32),6, 2, 2, 2, 2, 2));
+		entities.put("1", new Entity("1","O0", new Rect2i(30, 0, 24, 32),2));
+		entities.put("2", new Trader("2","C0", new Rect2i(60, 0, 24, 32),1, 2, 2, 2, 2, 2));
+		entities.put("3", new Player("3","C0", new Rect2i(90, 0, 24, 32),6, 2, 2, 2, 2, 2));
 	}
 	public void drawLevel(Graphics g){
 		for(int y = (int) ((Game.cameraLocation.y*scale)/tileHeight), yLoc = (int) -((Game.cameraLocation.y*scale)%tileHeight); y < height && yLoc < game.window.getHeight(); y++, yLoc += tileHeight){
@@ -72,9 +79,7 @@ public class Level {
 	}
 	public void removeEntity(String serverID){
 		entities.remove(serverID);
-	}
-
-	
+	}	
 	public Entity getEntity(Vec2f position){
 		for(Entity entity : entities.values()){
 			if(Utilities.checkCollision(entity.getBox(), position))
@@ -88,7 +93,7 @@ public class Level {
 		int numArguments = 8;
 		int numEntities = args.length/numArguments;
 		for(int i = 0; i < numEntities; i++){
-			Game.curLvl.addEntity(new Entity(Integer.toString(Packet.parseToInt(args[0+i*numArguments])),Integer.toString(Packet.parseToInt(args[1+i*numArguments])), Packet.parseToInt(args[2+i*numArguments]), new Rect2i(Packet.parseToInt(args[3+i*numArguments]), Packet.parseToInt(args[4+i*numArguments]), Packet.parseToInt(args[5+i*numArguments]), Packet.parseToInt(args[6+i*numArguments])), Packet.parseToInt(args[7+i*numArguments])));
+			Game.curLvl.addEntity(new Entity(Integer.toString(Packet.parseToInt(args[0+i*numArguments])),Integer.toString(Packet.parseToInt(args[1+i*numArguments])),  new Rect2i(Packet.parseToInt(args[2+i*numArguments]), Packet.parseToInt(args[3+i*numArguments]), Packet.parseToInt(args[4+i*numArguments]), Packet.parseToInt(args[5+i*numArguments])), Packet.parseToInt(args[6+i*numArguments])));
 		}
 	}
 	public void updateEntity(byte[] data){

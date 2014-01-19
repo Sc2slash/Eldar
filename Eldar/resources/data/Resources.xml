@@ -1,27 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Resources>
-	<Entities>
-		<Characters Prefix="C">
-			<NakedGuy ID="0" Path="Image.png">
+	<Graphics>
+		<Entities>
+			<Characters Prefix="C" FolderPath="/graphics/Entities/Characters/">
+				<NakedGuy ID="0" Path="Image.png" Description="It's a naked guy!">
+					<Animations>
+						<Animation ID="0" x="0" y="0" w="24" h="32"></Animation>
+						<Animation ID="1" x="24" y="0" w="24" h="32"></Animation>
+						<Animation ID="2" x="48" y="0" w="24" h="32"></Animation>
+						<Animation ID="3" x="0" y="32" w="24" h="32"></Animation>
+						<Animation ID="4" x="24" y="32" w="24" h="32"></Animation>
+						<Animation ID="5" x="48" y="32" w="24" h="32"></Animation>
+						<Animation ID="6" x="0" y="64" w="24" h="32"></Animation>
+						<Animation ID="7" x="24" y="64" w="24" h="32"></Animation>
+						<Animation ID="8" x="48" y="64" w="24" h="32"></Animation>
+						<Animation ID="9" x="0" y="96" w="24" h="32"></Animation>
+						<Animation ID="10" x="24" y="96" w="24" h="32"></Animation>
+						<Animation ID="11" x="48" y="96" w="24" h="32"></Animation>
+					</Animations>
+				</NakedGuy>
+			</Characters>
+		<Objects Prefix="O" FolderPath="/graphics/Entities/Objects/">
+			<Campfire ID="0" Path="campfire.png" Description="It's a campfire!">
 				<Animations>
-					<Animation ID="0" x="0" y="0" w="24" h="32"></Animation>
-					<Animation ID="1" x="24" y="0" w="24" h="32"></Animation>
-					<Animation ID="2" x="48" y="0" w="24" h="32"></Animation>
-					<Animation ID="3" x="0" y="32" w="24" h="32"></Animation>
-					<Animation ID="4" x="24" y="32" w="24" h="32"></Animation>
-					<Animation ID="5" x="48" y="32" w="24" h="32"></Animation>
-					<Animation ID="6" x="0" y="64" w="24" h="32"></Animation>
-					<Animation ID="7" x="24" y="64" w="24" h="32"></Animation>
-					<Animation ID="8" x="48" y="64" w="24" h="32"></Animation>
-					<Animation ID="9" x="0" y="96" w="24" h="32"></Animation>
-					<Animation ID="10" x="24" y="96" w="24" h="32"></Animation>
-					<Animation ID="11" x="48" y="96" w="24" h="32"></Animation>
+					<Animation ID="0" x="0" y="0" w="34" h="38"></Animation>
+					<Animation ID="1" x="34" y="0" w="34" h="38"></Animation>			
+					<Animation ID="2" x="68" y="0" w="34" h="38"></Animation>
+					<Animation ID="3" x="102" y="0" w="34" h="38"></Animation>
 				</Animations>
-			</NakedGuy></Characters>
-		<Objects Prefix="O"></Objects>
-	</Entities>
-	<Items>
-	</Items>
-	<Tilesets>
-	</Tilesets>
+			</Campfire>
+		</Objects>
+		</Entities>
+		<Items FolderPath="/graphics/Items/Objects/">
+			<Equipment Prefix="E" FolderPath="/graphics/Items/Equipment/">
+				<AceHat ID="0" Path="acehat.png" Description="It's an old hat!">
+					<Icon IconPath="acehat.png" x="0" y="0" w="32" h="32"></Icon>
+					<Animations>
+						<Animation ID="0" x="0" y="0" w="24" h="32"></Animation>
+						<Animation ID="1" x="24" y="0" w="24" h="32"></Animation>
+						<Animation ID="2" x="48" y="0" w="24" h="32"></Animation>
+						<Animation ID="3" x="0" y="32" w="24" h="32"></Animation>
+						<Animation ID="4" x="24" y="32" w="24" h="32"></Animation>
+						<Animation ID="5" x="48" y="32" w="24" h="32"></Animation>
+						<Animation ID="6" x="0" y="64" w="24" h="32"></Animation>
+						<Animation ID="7" x="24" y="64" w="24" h="32"></Animation>
+						<Animation ID="8" x="48" y="64" w="24" h="32"></Animation>
+						<Animation ID="9" x="0" y="96" w="24" h="32"></Animation>
+						<Animation ID="10" x="24" y="96" w="24" h="32"></Animation>
+						<Animation ID="11" x="48" y="96" w="24" h="32"></Animation>
+					</Animations>
+				</AceHat>
+				<Armor_DragonChest ID="1" Path="armor-dragonbody.png" Description="It's a pretty awesome set of armor!">
+					<Icon IconPath="armor-dragonbody.png" x="0" y="0" w="32" h="32"></Icon>
+					<Animations>
+						<Animation ID="0" x="0" y="0" w="24" h="32"></Animation>
+						<Animation ID="1" x="24" y="0" w="24" h="32"></Animation>
+						<Animation ID="2" x="48" y="0" w="24" h="32"></Animation>
+						<Animation ID="3" x="0" y="32" w="24" h="32"></Animation>
+						<Animation ID="4" x="24" y="32" w="24" h="32"></Animation>
+						<Animation ID="5" x="48" y="32" w="24" h="32"></Animation>
+						<Animation ID="6" x="0" y="64" w="24" h="32"></Animation>
+						<Animation ID="7" x="24" y="64" w="24" h="32"></Animation>
+						<Animation ID="8" x="48" y="64" w="24" h="32"></Animation>
+						<Animation ID="9" x="0" y="96" w="24" h="32"></Animation>
+						<Animation ID="10" x="24" y="96" w="24" h="32"></Animation>
+						<Animation ID="11" x="48" y="96" w="24" h="32"></Animation>
+					</Animations>
+				</Armor_DragonChest>
+				<Armor_DragonLegs ID="2" Path="armor-dragonlegs.png" Description="It's a pretty awesome set of armor!">
+					<Icon IconPath="armor-dragonlegs.png" x="0" y="0" w="32" h="32"></Icon>
+					<Animations>
+						<Animation ID="0" x="0" y="0" w="24" h="32"></Animation>
+						<Animation ID="1" x="24" y="0" w="24" h="32"></Animation>
+						<Animation ID="2" x="48" y="0" w="24" h="32"></Animation>
+						<Animation ID="3" x="0" y="32" w="24" h="32"></Animation>
+						<Animation ID="4" x="24" y="32" w="24" h="32"></Animation>
+						<Animation ID="5" x="48" y="32" w="24" h="32"></Animation>
+						<Animation ID="6" x="0" y="64" w="24" h="32"></Animation>
+						<Animation ID="7" x="24" y="64" w="24" h="32"></Animation>
+						<Animation ID="8" x="48" y="64" w="24" h="32"></Animation>
+						<Animation ID="9" x="0" y="96" w="24" h="32"></Animation>
+						<Animation ID="10" x="24" y="96" w="24" h="32"></Animation>
+						<Animation ID="11" x="48" y="96" w="24" h="32"></Animation>
+					</Animations>
+				</Armor_DragonLegs>
+			</Equipment>
+		</Items>
+		<Tilesets>
+		</Tilesets>
+		<Interface>
+			<Cursors></Cursors>
+		</Interface>
+	</Graphics>
 </Resources>

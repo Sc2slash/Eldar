@@ -37,6 +37,7 @@ public class Window extends Canvas{
 		this.frame.setLocationRelativeTo(null);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setFocusable(true);
+		this.createBufferStrategy(3);
 	}
 	public void launchWindow(){
 		this.frame.setVisible(true);

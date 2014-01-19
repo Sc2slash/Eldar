@@ -79,7 +79,6 @@ public abstract class Packet {
 		String prefix = "";
 		for (byte b : packet) {
 			byte temp = b;
-			System.out.println(temp);
 			int i = b;
 			if ((char)b == (char)126 || (char)b == (char)127) {
 				break;
@@ -87,10 +86,6 @@ public abstract class Packet {
 			
 			prefix += (char)b;
 		}
-//		for (byte c : prefix.getBytes()) {
-//			System.out.println((int)c);
-//		}
-		System.out.println(String.valueOf(Integer.toString(5)));
 		return lookupPacket(parseToInt(prefix));
 	}
 }

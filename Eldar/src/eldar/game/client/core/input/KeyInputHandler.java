@@ -12,13 +12,10 @@ import eldar.game.utilities.geometry.Vector.Vec2f;
 
 public class KeyInputHandler implements KeyListener{
 
-	private Game game;
-	
 	private boolean keys[] = new boolean[256];
 	
-	public KeyInputHandler(Game game){
-		this.game = game;
-		game.window.addKeyListener(this);
+	public KeyInputHandler(){
+		Game.window.addKeyListener(this);
 	}
 	public void keyPressed(KeyEvent e) {
 		keys[e.getKeyCode()] = true;
@@ -30,6 +27,20 @@ public class KeyInputHandler implements KeyListener{
 	}
 	public boolean getKey(int keyCode){
 		return keys[keyCode];
+	}
+	public void handleInput(){
+		if(getKey(KeyEvent.VK_UP)){
+			Game.cameraLocation.y -= 1;
+		}
+		if(getKey(KeyEvent.VK_DOWN)){
+			Game.cameraLocation.y += 1;
+		}
+		if(getKey(KeyEvent.VK_LEFT)){
+			Game.cameraLocation.x -= 1;
+		}
+		if(getKey(KeyEvent.VK_RIGHT)){
+			Game.cameraLocation.x += 1;
+		}
 	}
 	
 }

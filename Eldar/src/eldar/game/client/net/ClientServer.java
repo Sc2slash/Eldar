@@ -54,9 +54,9 @@ public class ClientServer extends Thread {
 			byte[] data = new byte[PACKET_SIZE];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {
-				System.out.println("Trying to receive packet");
+//				System.out.println("Trying to receive packet");
 				socket.receive(packet);
-				System.out.println("Received packet");
+//				System.out.println("Received packet");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -76,7 +76,7 @@ public class ClientServer extends Thread {
 		case LOGIN_CONFIRM:
 		{
 			Packet001Login_confirm packet = new Packet001Login_confirm(data);
-			System.out.println("LOGIN_CONFIRM - " + packet.get_is_valid());
+//			System.out.println("LOGIN_CONFIRM - " + packet.get_is_valid());
 			game.launcher.valid_login = packet.get_is_valid();
 			break;
 		}
@@ -94,15 +94,16 @@ public class ClientServer extends Thread {
 		case CONNECTION_SUCCEEDED: 
 		{
 			Packet005Connection_succeeded response = new Packet005Connection_succeeded(data);
-			System.out.println("IdentifierID = " + response.getIdentifierID());
+//			System.out.println("IdentifierID = " + response.getIdentifierID());
 			this.connection_id = response.getIdentifierID();
 		}
 			break;
 		case NEW_ENTITY:
-			Packet007New_entity.addEntity(data);
+			Game.curLvl.addEntity(data);
 			break;
-//		case UPDATE_ENTITY:
-//			break;
+		case UPDATE_ENTITY:
+			Game.curLvl.updateEntity(data);
+			break;
 		case REMOVE_ENTITY:
 			String[] args = Packet.readData(data);
 			Game.curLvl.removeEntity(args[1]);

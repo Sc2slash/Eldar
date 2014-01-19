@@ -32,8 +32,8 @@ public class Tileset {
 		}
 		setScale(GameProperties.resolutionScales[Game.gameProperties.resolution]);
 	}
-	public void renderTile(int x, int y, Graphics g, float scale, int tileID){
-		g.drawImage(tileset, x, y, (int)(x+tileWidth*scale), (int)(y+tileHeight*scale), tileBox[tileID].x, tileBox[tileID].y, tileBox[tileID].w, tileBox[tileID].h, null);
+	public void renderTile(int x, int y, Graphics g, int tileID){
+		g.drawImage(tileset, x, y, (int)(x+tileDrawWidth), (int)(y+tileDrawHeight), tileBox[tileID].x, tileBox[tileID].y, tileBox[tileID].w, tileBox[tileID].h, null);
 	}
 	public int getTileWidth(){
 		return tileWidth;

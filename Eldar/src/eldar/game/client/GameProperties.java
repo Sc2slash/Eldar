@@ -28,6 +28,9 @@ public class GameProperties {
 	public boolean languageFilter;
 	public boolean includeTips;
 	public boolean generalChat;
+	//Interface
+	public int iconSize;
+	
 	
 	public GameProperties(String propertiesPath){
 		this.propertiesPath = propertiesPath;
@@ -56,6 +59,8 @@ public class GameProperties {
 		languageFilter = Boolean.getBoolean(prop.getProperty("languageFilter"));
 		includeTips = Boolean.getBoolean(prop.getProperty("includeTips"));
 		generalChat = Boolean.getBoolean(prop.getProperty("generalChat"));
+		//Interface
+//		iconSize = Integer.parseInt(prop.getProperty("iconSize"));
 	}
 	
 	public void writeProperties(){
